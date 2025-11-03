@@ -83,17 +83,28 @@
 
 <div class="timer" class:timerActive={timers.statuses[id]}>
   <div style="display: flex;">
-    <span class="kbShortcut"><p style="color: white;">{kbShortcut?.toUpperCase()}</p></span>
+    <span class="kbShortcut" title={text.keyboardShortcut[appSettings.locale]}><p style="color: white;">{kbShortcut?.toUpperCase()}</p></span>
     <span contenteditable="true" bind:innerText={timers.names[id]} style="flex-grow: 1">
       {timers.names[id]?timers.names[id]:"Participant"}
     </span>
-    <button class="close-button" style="width: 3em; display: flex; justify-content: center; align-items: center;" onclick={deleteTimer}>×</button>
+    <button
+      class="close-button"
+      style="width: 3em; display: flex; justify-content: center; align-items: center;"
+      onclick={deleteTimer}
+      title={text.deleteTimer[appSettings.locale]}
+    >×</button>
   </div>
-  <button onclick={press} class="timer-button" style="margin: 10px 0; width: 4em; height: 3em;" class:redTimerButton={timers.statuses[id]}>
+  <button
+    onclick={press}
+    class="timer-button"
+    style="margin: 10px 0; width: 4em; height: 3em;"
+    class:redTimerButton={timers.statuses[id]}
+    title={timers.statuses[id]?text.stopTimer[appSettings.locale]:text.startTimer[appSettings.locale]}
+  >
     {timers.statuses[id]?"⏸":"▶"}
   </button>
   <div>
-    <span class="numeric-duration" style="font-size: 50px;">{humanTimeFromMilliseconds(timers.times[id])}</span>
+    <span class="numeric-duration" class:numericDurationActive={timers.statuses[id]} style="font-size: 50px;">{humanTimeFromMilliseconds(timers.times[id])}</span>
   </div>
 </div>
 
@@ -103,8 +114,6 @@
     margin: 10px;
     padding: 10px;
     flex: 1;
-    
-    
     
     background-size: 200% 200%;
     animation: Animation 20s ease infinite;
@@ -117,7 +126,7 @@
     75%{background-position:100% 0%}
     100%{background-position:0% 0%}
   }
-  .timer:hover {
+  .timer:not(.timerActive):hover {
     background: radial-gradient(
       light-dark(hsl(271, 100%, 86%), hsl(162, 100%, 20%)),
       light-dark(hsl(162, 100%, 86%), hsl(271, 100%, 20%))
@@ -127,27 +136,45 @@
   .timerActive {
     border-color: #f00;
     box-shadow: 0 0 10px 0px red;
+    
+    background: radial-gradient(
+      light-dark(hsl(0, 100%, 86%), hsl(162, 100%, 20%)),
+      light-dark(hsl(162, 100%, 86%), hsl(0, 100%, 17%))
+    );
+    background-size: 200% 200%;
+    transition: all 0.1s ease-in-out;
   }
   
+  .numericDurationActive {
+    text-shadow: 0 0 2px;
+    transition: all 0.1s ease-in-out;
+  }
   
   .kbShortcut {
     background-color: grey;
-    border-radius: 5px;
+    border-radius: 8px;
     width: 3em;
     display:flex;
     vertical-align: middle;
     justify-content: center;
     filter: drop-shadow(3px 3px);
+    user-select: none;
+  }
+  
+  .close-button:hover {
+    border-color: light-dark(hsl(0, 100%, 70%), hsl(0, 100%, 27%));
+    color: light-dark(hsl(0, 100%, 70%), hsl(0, 100%, 27%));
+    box-shadow: 0 0 10px 0px light-dark(hsl(0, 100%, 70%), hsl(0, 100%, 27%));
   }
   
   .redTimerButton {
     background-color: #f00;
+    color: white;
+    border-color: #f00;
+    box-shadow: 0 0 10px 0px #f00;
   }
-  
-  .timer-button:hover {
-    border-color: #646cff;
-  }
-  .close-button:hover {
-    border-color: #800;
+  .redTimerButton:hover {
+    border-color: #fff;
+    box-shadow: 0 0 10px 0px #fff;
   }
 </style>

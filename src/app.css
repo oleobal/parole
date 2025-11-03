@@ -23,14 +23,18 @@ h1 {
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: 2px solid light-dark(var(--light-text), var(--dark-text));
+  background: transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
   vertical-align: middle;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all 0.15s ease-in-out;
+}
+button:hover {
+  box-shadow: 0 0 10px 0px;
 }
 
 #app {

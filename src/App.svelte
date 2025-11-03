@@ -3,7 +3,7 @@
   import TopBar from './lib/TopBar.svelte';
   import { appSettings, timers } from './lib/state.svelte';
   import { humanTimeFromMilliseconds } from './lib/util';
-  import { defaultTimers, choices } from './lib/locales';
+  import { defaultTimers, choices, text } from './lib/locales';
   import { onMount } from 'svelte';
   
   let totalTime = $derived(Object.values(timers.times).reduce((t, n) => t+n, 0))
@@ -60,7 +60,7 @@
         <Timer id={timer}/>
       </div>
     {/each}
-    <div class="add-timer">
+    <div class="add-timer" title={text.addTimer[appSettings.locale]}>
       <button class="add-timer-button" onclick={addTimer}>+</button>
     </div>
   </div>
@@ -104,6 +104,8 @@
   }
   .add-timer-button:hover {
     border-color: #080;
+    color: #080;
+    box-shadow: 0 0 10px 0px #080;
   }
   .results {
     display: flex;

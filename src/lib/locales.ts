@@ -13,10 +13,6 @@ export const text : {[key: string] : {[key: string] : string}} = {
 		en: "Share",
 		fr: "Partager",
 	},
-	multipleSpeakers : {
-		en: "Multiple speakers can talk at once",
-		fr: "Plusieurs personnes peuvent parler à la fois"
-	},
 	language : {
 		en: "Language",
 		fr: "Langue"
@@ -33,6 +29,16 @@ export const text : {[key: string] : {[key: string] : string}} = {
 		en: "Generate",
 		fr: "Générer"
 	},
+	reset : {
+		en: "Reset",
+		fr: "Reset"
+	},
+	
+	multipleSpeakers : {
+		en: "Multiple speakers can talk at once",
+		fr: "Plusieurs personnes peuvent parler à la fois"
+	},
+	
 	resetAllTimers : {
 		en: "Reset all timers",
 		fr: "Remettre tous les chronos à zéro"
@@ -41,17 +47,31 @@ export const text : {[key: string] : {[key: string] : string}} = {
 		en: "Are you sure? All timers will be reset to zero.",
 		fr: "Etes-vous certain·e ? Tous les chronos reviendront à zéro."
 	},
-	reset : {
-		en: "Reset",
-		fr: "Reset"
-	},
+	
 	timersURL : {
 		en: "The URL to this page, with all names and times recorded",
 		fr: "L'adresse de cette page, avec tous les noms et les temps enregistrés"
 	},
+	
+	keyboardShortcut : {
+		en: "Keyboard shortcut",
+		fr: "Raccourci clavier"
+	},
 	deleteTimer : {
 		en: "Delete the timer",
 		fr: "Supprimer le chrono"
+	},
+	startTimer: {
+		en: "Start the timer",
+		fr: "Démarrer le chrono"
+	},
+	stopTimer: {
+		en: "Stop the timer",
+		fr: "Arrêter le chrono"
+	},
+	addTimer: {
+		en: "Add a timer",
+		fr: "Ajouter un chrono"
 	}
 }
 

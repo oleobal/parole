@@ -22,15 +22,15 @@
   </span>
   
   <button
+    class="cool-button"
     onclick={()=>{modals.open(Share, {})}}
     title={text.share[appSettings.locale]}
-    style="flex: none;"
   >⌲</button>
   
   <button
+    class="cool-button"
     onclick={()=>{modals.open(Settings, {} )}}
     title={text.settings[appSettings.locale]}
-    style="flex: none;"
   >⚙</button>
 </div>
 
@@ -92,4 +92,15 @@
     left: 0;
     background: rgba(0, 0, 0, 0.5);
   }
+  
+  .cool-button {
+    flex: none;
+  }
+  
+  .cool-button:hover {
+    border-color: #646cff;
+    color: #646cff;
+    box-shadow: 0 0 10px 0px #646cff;
+  }
+  
 </style>
