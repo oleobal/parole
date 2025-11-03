@@ -8,6 +8,9 @@
   let totalTime = $derived(Object.values(timerTimes).reduce((t, n) => t+n, 0))
   let locale = $derived(appSettings.locale)
   
+  let sortedTimerIds = $derived(timerIds.toSorted((a, b) => {return timerTimes[b] - timerTimes[a]}))
+  
+  
   onMount(() => {
     if (choices.indexOf(navigator.language) != -1) {
       appSettings.locale = navigator.language;
@@ -62,7 +65,7 @@
   <div class="results">
     <table>
       <tbody>
-        {#each timerIds as timer}
+        {#each sortedTimerIds as timer}
           <tr>
             <td style="text-align: left;">{timerNames[timer]}</td>
             <td style="text-align: right; font-variant-numeric: tabular-nums; min-width: 50px;">{(timerTimes[timer] || totalTime)?(Math.round(timerTimes[timer] / totalTime * 100)):"—"}%</td>

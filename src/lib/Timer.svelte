@@ -8,12 +8,29 @@
   let index = $derived(timerIds.indexOf(id))
   let kbShortcut = $derived(keyboardAlphabet[index])
   
+  let internalTime: number = 0;
+  let latestTurnOn : number = 0;
+  
   const press = () => {
     timerStatuses[id] = !timerStatuses[id]
     if (!appSettings.multipleSpeakers) {
       Object.entries(timerStatuses).forEach(([k, v]) => { if (v && k!=id) {timerStatuses[k]=false}})
     }
   }
+  
+  $effect(() => {
+    // overwrite time to avoid drift, as the code lower down sums floats every frame
+    if (timerStatuses[id] && latestTurnOn === 0) {
+      latestTurnOn = performance.now()
+    } else if (!timerStatuses[id] && latestTurnOn !== 0) {
+      internalTime += (performance.now() - latestTurnOn)
+      const oit = timerTimes[id]
+      timerTimes[id] = internalTime
+      latestTurnOn = 0;
+      //console.debug(`updated time from ${oit} to ${internalTime}`)
+    }
+    
+  })
   
   const deleteTimer = () => {
     const isSure = confirm(text.deleteTimer[locale]+` ${timerNames[id]} ?`)
@@ -32,7 +49,7 @@
   
   
   onMount(() => {
-    let lastTime = null;
+    let lastTime : number | null = null;
     if (timerTimes[id] === undefined) {
       timerTimes[id] = 0;
     }
