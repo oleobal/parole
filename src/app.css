@@ -1,6 +1,15 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   color-scheme: light dark;
+  
+  --light-bg: #fff;
+  --dark-bg: #222;
+  --light-text: #000;
+  --dark-text: #fff;
+  
+  background-color: light-dark(var(--light-bg), var(--dark-bg));
+  color: light-dark(var(--light-text), var(--dark-text));
+   
 }
 
 body {
@@ -25,22 +34,13 @@ button {
 }
 
 #app {
-  padding: 0 5px;
+  padding: 0;
   text-align: center;
 }
 
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+a:hover {
+  color: #747bff;
 }
 
 .numeric-duration {

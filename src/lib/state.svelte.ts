@@ -1,9 +1,14 @@
-export let locale : string = $state("en")
-
-export let timerIds : number[] = $state([]);
-export let timerNames : {[key: number]: string} = $state({})
-export let timerTimes : {[key: number]: number} = $state({})
-export let timerStatuses : {[key: number]: boolean} = $state({})
+export let timers : {
+  ids: number[],
+  names: {[key: number]: string},
+  times: {[key: number]: number},
+  statuses: {[key: number]: boolean}
+} = $state({
+  ids: [],
+  names: {},
+  times: {},
+  statuses: {},
+})
 
 export let appSettings : {[key: string]: any} = $state({
   multipleSpeakers: false,

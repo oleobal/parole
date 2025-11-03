@@ -514,6 +514,11 @@ svelte-check@^4.3.1:
     picocolors "^1.0.0"
     sade "^1.7.4"
 
+svelte-modals@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/svelte-modals/-/svelte-modals-2.0.1.tgz#f85a760db76e4f9f001710c83fab5d6ecd1f3f6d"
+  integrity sha512-4nGWxveM0eILQnkjmlA7nComRSsCW5QssY9d1qNklZaNlnwnziW5xYqLN3ufjyA0/Cn9oMO4i9+8s8zmlw4IiQ==
+
 svelte@^5.39.4:
   version "5.39.6"
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-5.39.6.tgz#f63268d78044c0cad0b2e18e94e769c411e1b80c"

@@ -1,44 +1,43 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { locale, timerTimes, timerNames, timerStatuses, appSettings, timerIds } from './state.svelte';
+  import { appSettings, timers } from './state.svelte';
   import { humanTimeFromMilliseconds, keyboardAlphabet } from './util';
   import { text } from './locales';
   
   let { id } = $props();
-  let index = $derived(timerIds.indexOf(id))
+  let index = $derived(timers.ids.indexOf(id))
   let kbShortcut = $derived(keyboardAlphabet[index])
   
-  let internalTime: number = 0;
+  let internalTime : number = 0;
   let latestTurnOn : number = 0;
   
   const press = () => {
-    timerStatuses[id] = !timerStatuses[id]
+    timers.statuses[id] = !timers.statuses[id]
     if (!appSettings.multipleSpeakers) {
-      Object.entries(timerStatuses).forEach(([k, v]) => { if (v && k!=id) {timerStatuses[k]=false}})
+      Object.entries(timers.statuses).forEach(([k, v]) => { if (v && k!=id) {timers.statuses[Number(k)]=false}})
     }
   }
   
   $effect(() => {
     // overwrite time to avoid drift, as the code lower down sums floats every frame
-    if (timerStatuses[id] && latestTurnOn === 0) {
+    if (timers.statuses[id] && latestTurnOn === 0) {
       latestTurnOn = performance.now()
-    } else if (!timerStatuses[id] && latestTurnOn !== 0) {
+    } else if (!timers.statuses[id] && latestTurnOn !== 0) {
       internalTime += (performance.now() - latestTurnOn)
-      const oit = timerTimes[id]
-      timerTimes[id] = internalTime
+      const oit = timers.times[id]
+      timers.times[id] = internalTime
       latestTurnOn = 0;
       //console.debug(`updated time from ${oit} to ${internalTime}`)
     }
-    
   })
   
   const deleteTimer = () => {
-    const isSure = confirm(text.deleteTimer[locale]+` ${timerNames[id]} ?`)
+    const isSure = confirm(text.deleteTimer[appSettings.locale]+` ${timers.names[id]} ?`)
     if (!isSure) { return; }
-    delete timerNames[id];
-    delete timerStatuses[id];
-    delete timerTimes[id];
-    timerIds.splice(timerIds.indexOf(id), 1);
+    delete timers.names[id];
+    delete timers.statuses[id];
+    delete timers.times[id];
+    timers.ids.splice(timers.ids.indexOf(id), 1);
   }
   
   const onKeyDown = (e:KeyboardEvent) => {
@@ -50,22 +49,24 @@
   
   onMount(() => {
     let lastTime : number | null = null;
-    if (timerTimes[id] === undefined) {
-      timerTimes[id] = 0;
+    if (timers.times[id] === undefined) {
+      timers.times[id] = 0;
+    } else {
+      internalTime = timers.times[id];
     }
-    if (timerStatuses[id] === undefined) {
-      timerStatuses[id] = false;
+    if (timers.statuses[id] === undefined) {
+      timers.statuses[id] = false;
     }
     
 
     let frame = requestAnimationFrame(function update(time) {
       frame = requestAnimationFrame(update);
 
-      if (timerStatuses[id]) {
+      if (timers.statuses[id]) {
         if (!lastTime) {
           lastTime = performance.now();
         }
-        timerTimes[id] += time - lastTime;
+        timers.times[id] += time - lastTime;
         lastTime = time;
       } else {
         lastTime = null;
@@ -80,19 +81,19 @@
 
 <svelte:window on:keydown={onKeyDown} />
 
-<div class="timer" class:timerActive={timerStatuses[id]}>
+<div class="timer" class:timerActive={timers.statuses[id]}>
   <div style="display: flex;">
     <span class="kbShortcut"><p style="color: white;">{kbShortcut?.toUpperCase()}</p></span>
-    <span contenteditable="true" bind:innerText={timerNames[id]} style="flex-grow: 1">
-      {timerNames[id]?timerNames[id]:"Participant"}
+    <span contenteditable="true" bind:innerText={timers.names[id]} style="flex-grow: 1">
+      {timers.names[id]?timers.names[id]:"Participant"}
     </span>
     <button class="close-button" style="width: 3em; display: flex; justify-content: center; align-items: center;" onclick={deleteTimer}>×</button>
   </div>
-  <button onclick={press} class="timer-button" style="margin: 10px 0; width: 4em; height: 3em;" class:redTimerButton={timerStatuses[id]}>
-    {timerStatuses[id]?"⏸":"▶"}
+  <button onclick={press} class="timer-button" style="margin: 10px 0; width: 4em; height: 3em;" class:redTimerButton={timers.statuses[id]}>
+    {timers.statuses[id]?"⏸":"▶"}
   </button>
   <div>
-    <span class="numeric-duration" style="font-size: 50px;">{humanTimeFromMilliseconds(timerTimes[id])}</span>
+    <span class="numeric-duration" style="font-size: 50px;">{humanTimeFromMilliseconds(timers.times[id])}</span>
   </div>
 </div>
 
@@ -102,10 +103,32 @@
     margin: 10px;
     padding: 10px;
     flex: 1;
+    
+    
+    
+    background-size: 200% 200%;
+    animation: Animation 20s ease infinite;
+    
+  }
+  @keyframes Animation { 
+    0%{background-position:0% 0%}
+    25%{background-position:0% 100%}
+    50%{background-position:100% 100%}
+    75%{background-position:100% 0%}
+    100%{background-position:0% 0%}
+  }
+  .timer:hover {
+    background: radial-gradient(
+      light-dark(hsl(271, 100%, 86%), hsl(162, 100%, 20%)),
+      light-dark(hsl(162, 100%, 86%), hsl(271, 100%, 20%))
+    );
+    background-size: 200% 200%;
   }
   .timerActive {
     border-color: #f00;
+    box-shadow: 0 0 10px 0px red;
   }
+  
   
   .kbShortcut {
     background-color: grey;
