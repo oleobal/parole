@@ -20,3 +20,10 @@ export const humanTimeFromMilliseconds = (s: number) => {
   else 
     return secs + '.' + pad(cs);
 }
+
+export const trimMargin = (text: string) => {
+  /// look at the first line to determine the leading whitespace, so it should be empty of text
+  
+  const lead = text.match(RegExp(/^[\s]+/))?.[0]
+  return lead ? text.replaceAll(lead, "\n") : text
+}

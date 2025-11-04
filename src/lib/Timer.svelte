@@ -121,9 +121,9 @@
   }
   @keyframes Animation { 
     0%{background-position:0% 0%}
-    25%{background-position:0% 100%}
+    20%{background-position:0% 100%}
     50%{background-position:100% 100%}
-    75%{background-position:100% 0%}
+    70%{background-position:100% 0%}
     100%{background-position:0% 0%}
   }
   .timer:not(.timerActive):hover {
