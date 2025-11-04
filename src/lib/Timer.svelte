@@ -113,7 +113,7 @@
     padding: 10px;
     flex: 1;
     
-    background: light-dark(var(--light-bg), var(--dark-bg));
+    background: light-dark(rgba(255,255,255,0.5), rgba(0,0,0,0.5));
     
     background-size: 200% 200%;
     animation: Animation 20s ease infinite;
