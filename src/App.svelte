@@ -5,6 +5,7 @@
   import { humanTimeFromMilliseconds } from './lib/util';
   import { defaultTimers, choices, text } from './lib/locales';
   import { onMount } from 'svelte';
+  import Button from './lib/elements/Button.svelte';
   
   let totalTime = $derived(Object.values(timers.times).reduce((t, n) => t+n, 0))
   let locale = $derived(appSettings.locale)
@@ -61,7 +62,7 @@
       </div>
     {/each}
     <div class="add-timer" title={text.addTimer[appSettings.locale]}>
-      <button class="add-timer-button" onclick={addTimer}>+</button>
+      <Button onclick={addTimer} color="#080" contents="+"/>
     </div>
   </div>
   
@@ -85,9 +86,6 @@
 </main>
 
 <style>
-
-  
-  
   .timers {
     display: flex;
     flex-wrap: wrap;
@@ -104,11 +102,6 @@
     display:flex;
     justify-content: space-around;
     align-items: center;
-  }
-  .add-timer-button:hover {
-    border-color: #080;
-    color: #080;
-    box-shadow: 0 0 10px 0px #080;
   }
   .results {
     display: flex;

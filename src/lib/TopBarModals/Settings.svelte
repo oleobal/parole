@@ -1,8 +1,10 @@
 <script lang="ts">
-  import { text, choices } from '../locales';
+  import Button from '../elements/Button.svelte';
+  import { choices, localized } from '../locales';
   import { appSettings, timers } from '../state.svelte';
   
-  
+  const resetIcon='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:none;stroke:currentColor;stroke-miterlimit:10;stroke-width:1.92px;}</style></defs><polyline class="cls-1" points="23.5 20.63 17.75 20.63 17.75 14.88"/><polyline class="cls-1" points="0.5 3.38 6.25 3.38 6.25 9.13"/><path class="cls-1" d="M9.23,1.83A10.12,10.12,0,0,1,12,1.46a10.54,10.54,0,0,1,6.06,19.16"/><path class="cls-1" d="M14.77,22.17a10.12,10.12,0,0,1-2.77.37A10.54,10.54,0,0,1,5.94,3.38"/></svg>'
+
   const {
     // provided by <Modals />
     isOpen,
@@ -10,7 +12,7 @@
   } = $props()
   
   const resetAllTimers = () => {
-    const reallyDoIt = confirm(text.resetAllTimersAreYouSure[appSettings.locale])
+    const reallyDoIt = confirm(localized("resetAllTimersAreYouSure"))
     if (!reallyDoIt) { return; }
     timers.ids.forEach(id => {
       timers.statuses[id] = false;
@@ -22,28 +24,42 @@
 {#if isOpen}
   <div role="dialog" class="modal">
     <div class="contents">
-      <h2 style="margin-top: 0;">{text.settings[appSettings.locale]}</h2>
-      
-      <div>
-        <label for="reset-all-timers">{text.resetAllTimers[appSettings.locale]}</label>
-        <button id="reset-all-timers" onclick={resetAllTimers}>{text.reset[appSettings.locale]}</button>
-      </div>
-      
-      <div>
-        <input type="checkbox" id="multiple-speakers" bind:checked={appSettings.multipleSpeakers}>
-        <label for="multiple-speakers">{text.multipleSpeakers[appSettings.locale]}</label>
-      </div>
-      <div>
-        <label for="language-selector">{text.language[appSettings.locale]}</label>
-        <select id="language-selector" bind:value={appSettings.locale}>
-          {#each choices as language}
-            <option value={language}>{language}</option>
-          {/each}
-        </select>
-      </div>
+      <h2 style="margin-top: 0;">{localized("settings")}</h2>
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <label for="reset-all-timers">{localized("resetAllTimers")}</label>
+            </td>
+            <td>
+              <Button onclick={resetAllTimers} title={localized("reset")} htmlContents={resetIcon} isSquare height="2em"/>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="multiple-speakers">{localized("multipleSpeakers")}</label>
+            </td>
+            <td>
+              <input type="checkbox" id="multiple-speakers" bind:checked={appSettings.multipleSpeakers}>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="language-selector">{localized("language")}</label>
+            </td>
+            <td>
+              <select id="language-selector" bind:value={appSettings.locale}>
+                {#each choices as language}
+                  <option value={language}>{language}</option>
+                {/each}
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
       
       <div class="actions">
-        <button onclick={() => close()}>{text.close[appSettings.locale]}</button>
+        <button onclick={() => close()}>{localized("close")}</button>
       </div>
     </div>
   </div>

@@ -6,6 +6,7 @@
   import Settings from './TopBarModals/Settings.svelte';
   import Share from './TopBarModals/Share.svelte';
   import Help from './TopBarModals/Help.svelte';
+  import Button from './elements/Button.svelte';
   
   const wrenchIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="auto" height="100%" viewBox="0 0 24 24"><defs><style>.cls-1{fill:none;stroke:currentColor;stroke-miterlimit:10;stroke-width:1.91px;}</style></defs><path class="cls-1" d="M21.94,4.76,18.12,8.58l-2-.68-.68-2,3.82-3.82a5.71,5.71,0,0,0-7.93,6.81L1.5,18.68,5.32,22.5l9.81-9.81a5.71,5.71,0,0,0,6.81-7.93Z"/></svg>'
   
@@ -40,30 +41,9 @@
   <span class="title-container">
     <h1 class={{"title":true, "title-too-big": true}}>{localized("speakingTime")}</h1>
   </span>
-  
-  <button
-    class="cool-button"
-    onclick={()=>{modals.open(Help, {})}}
-    title={localized("help")}
-  >
-    {@html infoIcon}
-  </button>
-  
-  <button
-    class="cool-button"
-    onclick={()=>{modals.open(Share, {})}}
-    title={localized("share")}
-  >
-    {@html paperAirplaneIcon}
-</button>
-  
-  <button
-    class="cool-button"
-    onclick={()=>{modals.open(Settings, {} )}}
-    title={localized("settings")}
-  >
-    {@html wrenchIcon}
-  </button>
+  <Button htmlContents={infoIcon} onclick={()=>{modals.open(Help, {} )}} title={localized("help")} isSquare color="#646cff" height="3.4em"/>
+  <Button htmlContents={paperAirplaneIcon} onclick={()=>{modals.open(Share, {} )}} title={localized("share")} isSquare color="#646cff" height="3.4em"/>
+  <Button htmlContents={wrenchIcon} onclick={()=>{modals.open(Settings, {} )}} title={localized("settings")} isSquare color="#646cff" height="3.4em"/>
   </div>
 </div>
 
@@ -150,20 +130,6 @@
     right: 0;
     left: 0;
     background: rgba(0, 0, 0, 0.5);
-  }
-  
-  .cool-button {
-    flex: none;
-    height: 3.4em;
-    aspect-ratio: 1 / 1;
-    padding: 10px;
-  }
-  
-  
-  .cool-button:hover {
-    border-color: #646cff;
-    color: #646cff;
-    box-shadow: 0 0 10px 0px #646cff;
   }
   
 </style>

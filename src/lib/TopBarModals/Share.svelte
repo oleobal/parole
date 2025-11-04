@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { text } from '../locales';
-  import { appSettings, timers } from '../state.svelte';
+  import { localized } from '../locales';
+  import { timers } from '../state.svelte';
   
   let timersURL : string | null = $state(null)
   
@@ -26,17 +26,17 @@
 {#if isOpen}
   <div role="dialog" class="modal">
     <div class="contents">
-      <h2 style="margin-top: 0;">{text.share[appSettings.locale]}</h2>
+      <h2 style="margin-top: 0;">{localized("share")}</h2>
       
       <div class="items">
-        <p>{text.timersURL[appSettings.locale]}</p>
+        <p>{localized("timersURL")}</p>
         
         <div class="code">{timersURL}</div>
         
       </div>
       
       <div class="actions">
-        <button onclick={() => close()}>{text.close[appSettings.locale]}</button>
+        <button onclick={() => close()}>{localized("close")}</button>
       </div>
     </div>
   </div>

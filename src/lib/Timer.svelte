@@ -2,11 +2,14 @@
   import { onMount } from 'svelte';
   import { appSettings, timers } from './state.svelte';
   import { humanTimeFromMilliseconds, keyboardAlphabet } from './util';
-  import { text } from './locales';
+  import { localized } from './locales';
+  import Button from './elements/Button.svelte';
   
   let { id } = $props();
   let index = $derived(timers.ids.indexOf(id))
   let kbShortcut = $derived(keyboardAlphabet[index])
+  
+  const trashIcon = '<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:none;stroke:currentColor;stroke-miterlimit:10;stroke-width:1.91px;}</style></defs><path class="cls-1" d="M16.88,22.5H7.12a1.9,1.9,0,0,1-1.9-1.8L4.36,5.32H19.64L18.78,20.7A1.9,1.9,0,0,1,16.88,22.5Z"/><line class="cls-1" x1="2.45" y1="5.32" x2="21.55" y2="5.32"/><path class="cls-1" d="M10.09,1.5h3.82a1.91,1.91,0,0,1,1.91,1.91V5.32a0,0,0,0,1,0,0H8.18a0,0,0,0,1,0,0V3.41A1.91,1.91,0,0,1,10.09,1.5Z"/><line class="cls-1" x1="12" y1="8.18" x2="12" y2="19.64"/><line class="cls-1" x1="15.82" y1="8.18" x2="15.82" y2="19.64"/><line class="cls-1" x1="8.18" y1="8.18" x2="8.18" y2="19.64"/></svg>'
   
   let internalTime : number = 0;
   let latestTurnOn : number = 0;
@@ -32,7 +35,7 @@
   })
   
   const deleteTimer = () => {
-    const isSure = confirm(text.deleteTimer[appSettings.locale]+` ${timers.names[id]} ?`)
+    const isSure = confirm(localized("deleteTimer")+` ${timers.names[id]} ?`)
     if (!isSure) { return; }
     delete timers.names[id];
     delete timers.statuses[id];
@@ -83,23 +86,18 @@
 
 <div class="timer" class:timerActive={timers.statuses[id]}>
   <div style="display: flex;">
-    <span class="kbShortcut" title={text.keyboardShortcut[appSettings.locale]}><p style="color: white;">{kbShortcut?.toUpperCase()}</p></span>
+    <div class="kbShortcut" title={localized("keyboardShortcut")}>{kbShortcut?.toUpperCase()}</div>
     <span contenteditable="true" bind:innerText={timers.names[id]} style="flex-grow: 1">
       {timers.names[id]?timers.names[id]:"Participant"}
     </span>
-    <button
-      class="close-button"
-      style="width: 3em; display: flex; justify-content: center; align-items: center;"
-      onclick={deleteTimer}
-      title={text.deleteTimer[appSettings.locale]}
-    >×</button>
+    <Button onclick={deleteTimer} color="light-dark(hsl(0, 100%, 70%), hsl(0, 100%, 27%))" htmlContents={trashIcon} title={localized("deleteTimer")} isSquare height="3em"/>
   </div>
   <button
     onclick={press}
     class="timer-button"
     style="margin: 10px 0; width: 4em; height: 3em;"
     class:redTimerButton={timers.statuses[id]}
-    title={timers.statuses[id]?text.stopTimer[appSettings.locale]:text.startTimer[appSettings.locale]}
+    title={localized(timers.statuses[id]?"stopTimer":"startTimer")}
   >
     {timers.statuses[id]?"⏸":"▶"}
   </button>
@@ -152,19 +150,19 @@
   
   .kbShortcut {
     background-color: grey;
+    color: white;
     border-radius: 8px;
-    width: 3em;
+    flex: none;
+    height: 2em;
+    padding: calc(2em * 0.2);
+    aspect-ratio: 1 / 1;
     display:flex;
     vertical-align: middle;
+    text-align: center;
     justify-content: center;
+    align-items: center;
     filter: drop-shadow(3px 3px);
     user-select: none;
-  }
-  
-  .close-button:hover {
-    border-color: light-dark(hsl(0, 100%, 70%), hsl(0, 100%, 27%));
-    color: light-dark(hsl(0, 100%, 70%), hsl(0, 100%, 27%));
-    box-shadow: 0 0 10px 0px light-dark(hsl(0, 100%, 70%), hsl(0, 100%, 27%));
   }
   
   .redTimerButton {
