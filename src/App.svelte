@@ -41,7 +41,6 @@
       Object.entries(timers.statuses).forEach(([k, _]) => {timers.statuses[Number(k)]=false})
     }
   }
-  
 
   const addTimer = () => {
     const id = performance.now() + Math.random();
@@ -52,9 +51,12 @@
 </script>
 <svelte:window on:keydown={onKeyDown} />
 
+<div class="background-container">
+  <div class="background background-l"></div>
+  <div class="background background-r"></div>
+</div>
 <main>
   <TopBar />
-
   <div class="timers">
     {#each timers.ids as timer}
       <div class="timer">
@@ -82,10 +84,56 @@
       </tbody>
     </table>
   </div>
-
 </main>
 
 <style>
+  .background-container {
+    position: absolute;
+    height: max(100%, 100vh); width: max(100%, 100vw);
+    overflow: hidden;
+    z-index: -1000;
+  }
+  .background {
+    position: absolute;
+    height: 100%; width: 100vw;
+  }
+  @keyframes Up-Down { 
+    0% {top: -25vh;}
+    50% {top: 75vh;}
+    100% {top: -25vh;}
+  }
+  @keyframes Breathe { 
+    0% {width: 80vw;}
+    25% {width: 130vw;}
+    50% {width: 70vw;}
+    75% {width: 200vw;}
+    100% {width: 80vw;}
+  }
+  
+  .background-l {
+    left: -50vw;
+    background: radial-gradient(
+      light-dark(hsl(271, 100%, 86%), hsl(162, 100%, 20%)),
+      transparent 50%
+    );
+    /* background: red; */
+    animation:
+    Breathe 40s ease infinite,
+    Up-Down 60s ease-in-out infinite;
+  }
+  .background-r {
+    right: -50vw;
+    background: radial-gradient(
+      light-dark(hsl(162, 100%, 86%), hsl(271, 100%, 20%)),
+      transparent 50%
+    );
+    animation: 
+    Breathe 60s ease-in-out infinite,
+    Up-Down 40s ease infinite;
+    animation-range-start: 30%;
+  }
+  
+  
   .timers {
     display: flex;
     flex-wrap: wrap;

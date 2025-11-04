@@ -3,13 +3,21 @@
   color-scheme: light dark;
   
   --light-bg: #fff;
-  --dark-bg: #222;
+  --dark-bg: #1e1e1e;
+  
+  --light-screen-bg: hsl(213, 65%, 91%);
+  --dark-screen-bg: hsl(213, 58%, 8%);
+  
   --light-text: #000;
   --dark-text: #fff;
   
-  background-color: light-dark(var(--light-bg), var(--dark-bg));
+  background-color: light-dark(var(--light-screen-bg), var(--dark-screen-bg));
   color: light-dark(var(--light-text), var(--dark-text));
    
+}
+
+html {
+  position: relative; /* used as reference by the animated background */
 }
 
 body {
@@ -35,6 +43,10 @@ button {
 }
 button:hover {
   box-shadow: 0 0 10px 0px;
+}
+button:active {
+  background-color: light-dark(hsla(54, 100%, 79%, 0.4), hsla(54, 100%, 35%, 0.4));
+  /* border-width: 3px; */
 }
 
 #app {
