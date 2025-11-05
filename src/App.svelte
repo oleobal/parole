@@ -6,6 +6,7 @@
   import { defaultTimers, choices, text } from './lib/locales';
   import { onMount } from 'svelte';
   import Button from './lib/elements/Button.svelte';
+  import { microphoneIcon, plusIcon } from './lib/icons';
   
   let totalTime = $derived(Object.values(timers.times).reduce((t, n) => t+n, 0))
   let locale = $derived(appSettings.locale)
@@ -64,21 +65,23 @@
       </div>
     {/each}
     <div class="add-timer" title={text.addTimer[appSettings.locale]}>
-      <Button onclick={addTimer} color="#080" contents="+"/>
+      <Button onclick={addTimer} color="#080" htmlContents={plusIcon} isSquare height="3em" />
     </div>
   </div>
   
   <div class="results">
-    <table>
+    <table style="font-size: 1.2rem;">
       <tbody>
         {#each sortedTimerIds as timer}
-          <tr>
+          <tr style={timers.statuses[timer]?"text-shadow: 0 0 2px;":""}>
+            <td><div style="height .8em; width: .8em; color: red;">{#if timers.statuses[timer]}{@html microphoneIcon}{/if}</div></td>
             <td style="text-align: left;">{timers.names[timer]}</td>
             <td style="text-align: right; font-variant-numeric: tabular-nums; min-width: 50px;">{(timers.times[timer] || totalTime)?(Math.round(timers.times[timer] / totalTime * 100)):"—"}%</td>
             <td style="text-align: right; min-width: 120px;" class="numeric-duration">{humanTimeFromMilliseconds(timers.times[timer])}</td>
           </tr>
         {/each}
         <tr>
+          <td></td>
           <td style="text-align: left; font-weight: bold;">Total</td><td></td><td class="numeric-duration" style="text-align: right;font-weight: bold;">{humanTimeFromMilliseconds(totalTime)}</td>
         </tr>
       </tbody>

@@ -40,15 +40,14 @@
     align-items: center;
     flex: auto;
     
-    overflow: hidden;
     container-type: inline-size;
   }
   
   .title {
     margin: 0;
-    /*font-size: min(3.2em, 10vw); */
     text-align: center;
     white-space: nowrap;
+    font-weight: 100;
   }
   @container (width < 600px) { /* measured approximately, not a good solution */
     .title {

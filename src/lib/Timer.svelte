@@ -4,7 +4,7 @@
   import { humanTimeFromMilliseconds, keyboardAlphabet } from './util';
   import { localized } from './locales';
   import Button from './elements/Button.svelte';
-  import { trashIcon } from './icons';
+  import { pauseIcon, playIcon, trashIcon } from './icons';
   
   let { id } = $props();
   let index = $derived(timers.ids.indexOf(id))
@@ -85,24 +85,27 @@
 <svelte:window on:keydown={onKeyDown} />
 
 <div class="timer" class:timerActive={timers.statuses[id]}>
-  <div style="display: flex;">
+  <div style="display: flex; gap: 10px;">
     <div class="kbShortcut" title={localized("keyboardShortcut")}>{kbShortcut?.toUpperCase()}</div>
-    <span contenteditable="true" bind:innerText={timers.names[id]} style="flex-grow: 1">
+    <div contenteditable="true" bind:innerText={timers.names[id]} class="name">
       {timers.names[id]?timers.names[id]:"Participant"}
-    </span>
+    </div>
     <Button onclick={deleteTimer} color="light-dark(hsl(0, 100%, 70%), hsl(0, 100%, 27%))" htmlContents={trashIcon} title={localized("deleteTimer")} isSquare height="3em"/>
   </div>
   <button
     onclick={press}
     class="timer-button"
-    style="margin: 10px 0; width: 4em; height: 3em;"
     class:redTimerButton={timers.statuses[id]}
     title={localized(timers.statuses[id]?"stopTimer":"startTimer")}
   >
-    {timers.statuses[id]?"⏸":"▶"}
+    {#if timers.statuses[id]}
+      {@html pauseIcon}
+    {:else}
+      {@html playIcon}
+    {/if}
   </button>
   <div>
-    <span class="numeric-duration" class:numericDurationActive={timers.statuses[id]} style="font-size: 50px;">{humanTimeFromMilliseconds(timers.times[id])}</span>
+    <span class="numeric-duration" style="font-size: 50px;">{humanTimeFromMilliseconds(timers.times[id])}</span>
   </div>
 </div>
 
@@ -134,6 +137,7 @@
     background-size: 200% 200%;
   }
   .timerActive {
+    text-shadow: 0 0 2px;
     border-color: #f00;
     box-shadow: 0 0 10px 0px red;
     
@@ -145,13 +149,16 @@
     transition: all 0.1s ease-in-out;
   }
   
-  .numericDurationActive {
-    text-shadow: 0 0 2px;
-    transition: all 0.1s ease-in-out;
+  .name {
+    flex-grow: 1;
+    font-size: 1.2rem;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   .kbShortcut {
-    background-color: grey;
     color: var(--dark-text);
     border-radius: 8px;
     flex: none;
@@ -163,8 +170,16 @@
     text-align: center;
     justify-content: center;
     align-items: center;
-    filter: drop-shadow(3px 3px light-dark(var(--light-text), var(--dark-text)));
     user-select: none;
+  }
+  
+  .timer-button {
+    margin: 10px 0;
+    height: 4em;
+    
+    flex: none;
+    aspect-ratio: 1 / 1;
+    padding: calc(4em * 0.10);
   }
   
   .redTimerButton {

@@ -17,3 +17,13 @@ export const infoIcon = `<svg width="100%" height="100%" viewBox="0 0 24 24" ver
 </svg>`
 
 export const resetIcon='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:none;stroke:currentColor;stroke-miterlimit:10;stroke-width:1.92px;}</style></defs><polyline class="cls-1" points="23.5 20.63 17.75 20.63 17.75 14.88"/><polyline class="cls-1" points="0.5 3.38 6.25 3.38 6.25 9.13"/><path class="cls-1" d="M9.23,1.83A10.12,10.12,0,0,1,12,1.46a10.54,10.54,0,0,1,6.06,19.16"/><path class="cls-1" d="M14.77,22.17a10.12,10.12,0,0,1-2.77.37A10.54,10.54,0,0,1,5.94,3.38"/></svg>'
+
+export const microphoneIcon='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:none;stroke:currentColor;stroke-miterlimit:10;stroke-width:1.91px;}</style></defs><line class="cls-1" x1="12" y1="22.5" x2="12" y2="18.68"/><rect class="cls-1" x="8.18" y="1.5" width="7.64" height="13.36" rx="3.7"/><path class="cls-1" d="M19.64,11.05h0A7.64,7.64,0,0,1,12,18.68h0a7.64,7.64,0,0,1-7.64-7.63h0"/><line class="cls-1" x1="9.14" y1="22.5" x2="14.86" y2="22.5"/></svg>'
+
+export const plusIcon='<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:none;stroke:currentColor;stroke-miterlimit:10;stroke-width:1.91px;}</style></defs><line class="cls-1" x1="6.27" y1="12" x2="17.73" y2="12"/><line class="cls-1" x1="12" y1="6.27" x2="12" y2="17.73"/></svg>'
+
+export const xmarkIcon='<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:none;stroke:currentColor;stroke-miterlimit:10;stroke-width:1.91px;}</style></defs><line class="cls-1" x1="16.77" y1="7.23" x2="7.23" y2="16.77"/><line class="cls-1" x1="7.23" y1="7.23" x2="16.77" y2="16.77"/></svg>'
+
+export const playIcon='<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:none;stroke:currentColor;stroke-miterlimit:10;stroke-width:1.91px;}</style></defs><polygon class="cls-1" points="17.73 12 9.14 16.77 9.14 7.23 17.73 12"/></svg>'
+
+export const pauseIcon='<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:none;stroke:currentColor;stroke-miterlimit:10;stroke-width:1.91px;}</style></defs><line class="cls-1" x1="14.86" y1="7.23" x2="14.86" y2="16.77"/><line class="cls-1" x1="9.14" y1="16.77" x2="9.14" y2="7.23"/></svg>'
