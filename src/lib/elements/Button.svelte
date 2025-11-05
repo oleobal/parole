@@ -25,7 +25,7 @@
 <button
   {onclick}
   style={buildStyleString()}
-  class={{"squareButton":isSquare, "textContent": contents!== null}}
+  class={{"squareButton":isSquare, "htmlContents": htmlContents!== null}}
   title={title}
 >
   {#if contents}
@@ -48,8 +48,8 @@
     padding: calc(var(--height) * 0.18);
   }
   
-  .textContent:hover {
-    border-width: 1px;
+  .htmlContents:hover {
+    border-width: 3px;
   }
   
 </style>

@@ -181,6 +181,9 @@
     aspect-ratio: 1 / 1;
     padding: calc(4em * 0.10);
   }
+  .timer-button:hover{
+    border-width: 3px;
+  }
   
   .redTimerButton {
     background-color: #f00;

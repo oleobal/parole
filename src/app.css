@@ -32,7 +32,7 @@ h1 {
 }
 
 button {
-  border-radius: 8px;
+  border-radius: 100%;
   border: 1px solid light-dark(var(--light-text), var(--dark-text));
   background: transparent;
   padding: 0.6em 1.2em;
@@ -40,10 +40,12 @@ button {
   vertical-align: middle;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
+  
+  /* anti-aliasing */
+  box-shadow: 0 0 0.75px 0px light-dark(var(--light-text), var(--dark-text)) inset, 0 0 0.75px 0px light-dark(var(--light-text), var(--dark-text));
 }
 button:hover {
   box-shadow: 0 0 10px 0px;
-  border-width: 3px;
 }
 button:active {
   background-color: light-dark(hsla(54, 100%, 79%, 0.4), hsla(54, 100%, 35%, 0.4));
