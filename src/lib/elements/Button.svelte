@@ -25,8 +25,8 @@
 <button
   {onclick}
   style={buildStyleString()}
-  class:squareButton={isSquare}
-  {title}
+  class={{"squareButton":isSquare, "textContent": contents!== null}}
+  title={title}
 >
   {#if contents}
     {contents}
@@ -47,4 +47,9 @@
     aspect-ratio: 1 / 1;
     padding: calc(var(--height) * 0.18);
   }
+  
+  .textContent:hover {
+    border-width: 1px;
+  }
+  
 </style>

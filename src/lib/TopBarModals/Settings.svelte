@@ -59,7 +59,7 @@
       </table>
       
       <div class="actions">
-        <button onclick={() => close()}>{localized("close")}</button>
+        <Button onclick={() => close()} contents={localized("close")} />
       </div>
     </div>
   </div>

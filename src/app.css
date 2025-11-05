@@ -33,22 +33,20 @@ h1 {
 
 button {
   border-radius: 8px;
-  border: 2px solid light-dark(var(--light-text), var(--dark-text));
+  border: 1px solid light-dark(var(--light-text), var(--dark-text));
   background: transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
   vertical-align: middle;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
 }
 button:hover {
   box-shadow: 0 0 10px 0px;
+  border-width: 3px;
 }
 button:active {
   background-color: light-dark(hsla(54, 100%, 79%, 0.4), hsla(54, 100%, 35%, 0.4));
-  /* border-width: 3px; */
 }
 
 #app {
