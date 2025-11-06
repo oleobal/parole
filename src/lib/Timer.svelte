@@ -4,9 +4,10 @@
   import { humanTimeFromMilliseconds, keyboardAlphabet } from './util';
   import { localized } from './locales';
   import Button from './elements/Button.svelte';
-  import { pauseIcon, playIcon, trashIcon } from './icons';
+  import { trashIcon } from './icons';
+  import TimerButton from './elements/TimerButton.svelte';
   
-  let { id } = $props();
+  let { id, smallMode = false} = $props();
   let index = $derived(timers.ids.indexOf(id))
   let kbShortcut = $derived(keyboardAlphabet[index])
   
@@ -85,6 +86,7 @@
 <svelte:window on:keydown={onKeyDown} />
 
 <div class="timer" class:timerActive={timers.statuses[id]}>
+{#if !smallMode}
   <div style="display: flex; gap: 10px;">
     <div class="kbShortcut" title={localized("keyboardShortcut")}>{kbShortcut?.toUpperCase()}</div>
     <div contenteditable="true" bind:innerText={timers.names[id]} class="name">
@@ -92,21 +94,30 @@
     </div>
     <Button onclick={deleteTimer} color="light-dark(hsl(0, 100%, 70%), hsl(0, 100%, 27%))" htmlContents={trashIcon} title={localized("deleteTimer")} isSquare height="3em"/>
   </div>
-  <button
-    onclick={press}
-    class="timer-button"
-    class:redTimerButton={timers.statuses[id]}
-    title={localized(timers.statuses[id]?"stopTimer":"startTimer")}
-  >
-    {#if timers.statuses[id]}
-      {@html pauseIcon}
-    {:else}
-      {@html playIcon}
-    {/if}
-  </button>
+  <TimerButton timerId={id} onclick={press} />
   <div>
     <span class="numeric-duration" style="font-size: 50px;">{humanTimeFromMilliseconds(timers.times[id])}</span>
   </div>
+{:else}
+  <div style="display: flex; gap: 10px;justify-content: space-around;align-items: center;">
+    <div style="display: flex; flex-direction: column;">
+      <Button onclick={deleteTimer} color="light-dark(hsl(0, 100%, 70%), hsl(0, 100%, 27%))" htmlContents={trashIcon} title={localized("deleteTimer")} isSquare height="3em"/>
+      <div class="kbShortcut" title={localized("keyboardShortcut")}>{kbShortcut?.toUpperCase()}</div>
+    </div>
+   
+    <div style="display: flex; flex-direction: column; flex: 1;">
+      <div contenteditable="true" bind:innerText={timers.names[id]} class="name">
+        {timers.names[id]?timers.names[id]:"Participant"}
+      </div>
+      <div style="flex: 1">
+        <span class="numeric-duration" style="font-size: 50px;">{humanTimeFromMilliseconds(timers.times[id])}</span>
+      </div>
+    </div>
+  
+    
+      <TimerButton timerId={id} onclick={press} />
+  </div>
+{/if}
 </div>
 
 <style>
@@ -171,28 +182,5 @@
     justify-content: center;
     align-items: center;
     user-select: none;
-  }
-  
-  .timer-button {
-    margin: 10px 0;
-    height: 4em;
-    
-    flex: none;
-    aspect-ratio: 1 / 1;
-    padding: calc(4em * 0.10);
-  }
-  .timer-button:hover{
-    border-width: 3px;
-  }
-  
-  .redTimerButton {
-    background-color: #f00;
-    color: white;
-    border-color: #f00;
-    box-shadow: 0 0 10px 0px #f00;
-  }
-  .redTimerButton:hover {
-    border-color: #fff;
-    box-shadow: 0 0 10px 0px #fff;
   }
 </style>

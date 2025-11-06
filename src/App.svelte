@@ -6,13 +6,25 @@
   import { defaultTimers, choices, text } from './lib/locales';
   import { onMount } from 'svelte';
   import Button from './lib/elements/Button.svelte';
-  import { microphoneIcon, plusIcon } from './lib/icons';
+  import { filledMicrophoneIcon, plusIcon } from './lib/icons';
   
   let totalTime = $derived(Object.values(timers.times).reduce((t, n) => t+n, 0))
   let locale = $derived(appSettings.locale)
   
   let sortedTimerIds = $derived(timers.ids.toSorted((a, b) => {return timers.times[b] - timers.times[a]}))
   
+  let timersElement : HTMLElement;
+  function countTimerColumns() {
+    const items = Array.from(timersElement.children) as HTMLElement[];
+    let columns = 0;
+
+    items.forEach((item, _) => {
+      if (item.offsetTop > items[0].offsetTop) return;
+      columns++;
+    });
+    return columns;
+  }
+  let nbOfTimerColumns: Number | null = $state(null)
   
   onMount(() => {
     if (window.location.hash) {
@@ -36,6 +48,15 @@
         });
       }
     }
+    
+    const resizeObserver = new ResizeObserver(entries => {
+      // We're only watching one element
+      const entry = entries.at(0);
+      // boxWidth = entry.contentBoxSize[0].blockSize;
+      nbOfTimerColumns = countTimerColumns();
+    });
+    resizeObserver.observe(timersElement);
+    return () => resizeObserver.unobserve(timersElement);
   })
   const onKeyDown = (e:KeyboardEvent) => {
     if (e.key === "Escape") {
@@ -58,13 +79,13 @@
 </div>
 <main>
   <TopBar />
-  <div class="timers">
+  <div class="timers" bind:this={timersElement}>
     {#each timers.ids as timer}
       <div class="timer">
-        <Timer id={timer}/>
+        <Timer id={timer} smallMode={nbOfTimerColumns===1}/>
       </div>
     {/each}
-    <div class="add-timer" title={text.addTimer[appSettings.locale]}>
+    <div class={"add-timer "+(nbOfTimerColumns===1?"add-timer-small-layout":"add-timer-big-layout")} title={text.addTimer[appSettings.locale]}>
       <Button onclick={addTimer} color="#080" htmlContents={plusIcon} isSquare height="3em" />
     </div>
   </div>
@@ -74,7 +95,7 @@
       <tbody>
         {#each sortedTimerIds as timer}
           <tr style={timers.statuses[timer]?"text-shadow: 0 0 2px;":""}>
-            <td><div style="height .8em; width: .8em; color: red;">{#if timers.statuses[timer]}{@html microphoneIcon}{/if}</div></td>
+            <td><div style="height .8em; width: .8em; color: red;">{#if timers.statuses[timer]}{@html filledMicrophoneIcon}{/if}</div></td>
             <td style="text-align: left;">{timers.names[timer]}</td>
             <td style="text-align: right; font-variant-numeric: tabular-nums; min-width: 50px;">{(timers.times[timer] || totalTime)?(Math.round(timers.times[timer] / totalTime * 100)):"—"}%</td>
             <td style="text-align: right; min-width: 120px;" class="numeric-duration">{humanTimeFromMilliseconds(timers.times[timer])}</td>
@@ -148,11 +169,16 @@
     display:flex;
   }
   .add-timer {
-    min-height: 200px;
     flex: 1 400px;
     display:flex;
     justify-content: space-around;
     align-items: center;
+  }
+  .add-timer-big-layout {
+    min-height: 200px;
+  }
+  .add-timer-small-layout {
+    min-height: 100px;
   }
   .results {
     display: flex;

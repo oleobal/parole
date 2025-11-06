@@ -48,6 +48,7 @@
     text-align: center;
     white-space: nowrap;
     font-weight: 100;
+    user-select: none;
   }
   @container (width < 600px) { /* measured approximately, not a good solution */
     .title {
