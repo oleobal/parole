@@ -170,7 +170,7 @@
   }
   
   .kbShortcut {
-    color: var(--dark-text);
+    color: light-dark(var(--light-text), var(--dark-text));
     border-radius: 8px;
     flex: none;
     height: 2em;
