@@ -3,15 +3,13 @@
   import TopBar from './lib/TopBar.svelte';
   import { appSettings, timers } from './lib/state.svelte';
   import { humanTimeFromMilliseconds } from './lib/util';
-  import { defaultTimers, choices, text } from './lib/locales';
+  import {choices, localize } from './lib/locales';
   import { onMount } from 'svelte';
   import Button from './lib/elements/Button.svelte';
   import { filledMicrophoneIcon, plusIcon } from './lib/icons';
   
-  let totalTime = $derived(Object.values(timers.times).reduce((t, n) => t+n, 0))
-  let locale = $derived(appSettings.locale)
-  
-  let sortedTimerIds = $derived(timers.ids.toSorted((a, b) => {return timers.times[b] - timers.times[a]}))
+  let totalTime = $derived(Object.values(timers.data).reduce((t, n) => t+n.time, 0))  
+  let sortedTimerIds = $derived(timers.ids.toSorted((a, b) => {return timers.data[b].time - timers.data[a].time}))
   
   let timersElement : HTMLElement;
   function countTimerColumns() {
@@ -25,26 +23,23 @@
     return columns;
   }
   let nbOfTimerColumns: Number | null = $state(null)
-  
+
   onMount(() => {
     if (window.location.hash) {
       const newTimers = JSON.parse(atob(window.location.hash.substring(1)))
       console.debug("loaded timers", newTimers)
       timers.ids = newTimers.ids;
-      timers.names = newTimers.names;
-      timers.times = newTimers.times;
-      timers.statuses = Array(newTimers.ids.length).fill(false)
-      //timers.statuses = newTimers.statuses;
-      // FIXME?: loading a running timer causes an error, because it relies on internal non-shared state
+      timers.data = newTimers.data;
     } else {
       // init with sensible defaults
       if (choices.indexOf(navigator.language) != -1) {
         appSettings.locale = navigator.language;
       }
       if (timers.ids.length == 0) {
-        [0, 1, 2].forEach(it => {
+        ["men", "women", "genderMinorities"].forEach(it => {
           const id = addTimer()
-          timers.names[id] = defaultTimers[locale][it];
+          timers.data[id].name = localize(it);
+          timers.data[id].internal.defaultName.key = it;
         });
       }
     }
@@ -60,12 +55,25 @@
   })
   const onKeyDown = (e:KeyboardEvent) => {
     if (e.key === "Escape") {
-      Object.entries(timers.statuses).forEach(([k, _]) => {timers.statuses[Number(k)]=false})
+      Object.entries(timers.data).forEach(([k, _]) => {timers.data[Number(k)].status=false})
     }
   }
 
   const addTimer = () => {
     const id = performance.now() + Math.random();
+    timers.data[id] = {
+      name: localize("participant"),
+      time: 0,
+      status: false,
+      internal: {
+        time: 0,
+        latestTurnOn: 0,
+        defaultName: {
+          key: "participant",
+          originalLocale: appSettings.locale,
+        },
+      },
+    }
     timers.ids.push(id);
     return id;
   }
@@ -85,7 +93,7 @@
         <Timer id={timer} smallMode={nbOfTimerColumns===1}/>
       </div>
     {/each}
-    <div class={"add-timer "+(nbOfTimerColumns===1?"add-timer-small-layout":"add-timer-big-layout")} title={text.addTimer[appSettings.locale]}>
+    <div class={"add-timer "+(nbOfTimerColumns===1?"add-timer-small-layout":"add-timer-big-layout")} title={localize("addTimer")}>
       <Button onclick={addTimer} color="#080" htmlContents={plusIcon} isSquare height="3em" />
     </div>
   </div>
@@ -94,11 +102,11 @@
     <table style="font-size: 1.2rem;">
       <tbody>
         {#each sortedTimerIds as timer}
-          <tr style={timers.statuses[timer]?"text-shadow: 0 0 2px;":""}>
-            <td><div style="height .8em; width: .8em; color: red;">{#if timers.statuses[timer]}{@html filledMicrophoneIcon}{/if}</div></td>
-            <td style="text-align: left;">{timers.names[timer]}</td>
-            <td style="text-align: right; font-variant-numeric: tabular-nums; min-width: 50px;">{(timers.times[timer] || totalTime)?(Math.round(timers.times[timer] / totalTime * 100)):"—"}%</td>
-            <td style="text-align: right; min-width: 120px;" class="numeric-duration">{humanTimeFromMilliseconds(timers.times[timer])}</td>
+          <tr style={timers.data[timer].status?"text-shadow: 0 0 2px;":""}>
+            <td><div style="height .8em; width: .8em; color: red;">{#if timers.data[timer].status}{@html filledMicrophoneIcon}{/if}</div></td>
+            <td style="text-align: left;">{timers.data[timer].name}</td>
+            <td style="text-align: right; font-variant-numeric: tabular-nums; min-width: 50px;">{(timers.data[timer].time || totalTime)?(Math.round(timers.data[timer].time / totalTime * 100)):"—"}%</td>
+            <td style="text-align: right; min-width: 120px;" class="numeric-duration">{humanTimeFromMilliseconds(timers.data[timer].time)}</td>
           </tr>
         {/each}
         <tr>

@@ -1,6 +1,6 @@
 <script lang="ts">
   import Button from '../elements/Button.svelte';
-  import { localized } from '../locales';
+  import { localize } from '../locales';
   import { timers } from '../state.svelte';
   
   let timersURL : string | null = $state(null)
@@ -29,20 +29,20 @@
 {#if isOpen}
   <div role="dialog" class="modal">
     <div class="contents">
-      <h2 style="margin-top: 0;">{localized("share")}</h2>
+      <h2 style="margin-top: 0;">{localize("share")}</h2>
       
       <div class="items">
-        <p>{localized("timersURL")}</p>
+        <p>{localize("timersURL")}</p>
         
         <div style="display: flex; gap: 10px;">
           <span class="code">{timersURL}</span>
-          <Button isSquare height="2em" title={localized("copy")} onclick={() => {if (timersURL) {navigator.clipboard.writeText(timersURL);}}} htmlContents={copyIcon}/>
+          <Button isSquare height="2em" title={localize("copy")} onclick={() => {if (timersURL) {navigator.clipboard.writeText(timersURL);}}} htmlContents={copyIcon}/>
         </div>
         
       </div>
       
       <div class="actions">
-        <Button onclick={() => close()} contents={localized("close")} />
+        <Button onclick={() => close()} contents={localize("close")} />
       </div>
     </div>
   </div>

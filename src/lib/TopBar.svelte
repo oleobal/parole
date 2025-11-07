@@ -1,6 +1,6 @@
 <script>
 
-  import { localized } from './locales';
+  import { localize } from './locales';
   
   import { modals } from 'svelte-modals'
   import { Modals } from 'svelte-modals'
@@ -26,11 +26,11 @@
 <div class="top-bar">
   <div class="items">
   <span class="title-container">
-    <h1 class={{"title":true, "title-too-big": true}}>{localized("speakingTime")}</h1>
+    <h1 class={{"title":true, "title-too-big": true}}>{localize("speakingTime")}</h1>
   </span>
-  <Button htmlContents={infoIcon} onclick={()=>{modals.open(Help, {} )}} title={localized("help")} isSquare color="#646cff" height="3.4em"/>
-  <Button htmlContents={paperAirplaneIcon} onclick={()=>{modals.open(Share, {} )}} title={localized("share")} isSquare color="#646cff" height="3.4em"/>
-  <Button htmlContents={wrenchIcon} onclick={()=>{modals.open(Settings, {} )}} title={localized("settings")} isSquare color="#646cff" height="3.4em"/>
+  <Button htmlContents={infoIcon} onclick={()=>{modals.open(Help, {} )}} title={localize("help")} isSquare color="#646cff" height="3.4em"/>
+  <Button htmlContents={paperAirplaneIcon} onclick={()=>{modals.open(Share, {} )}} title={localize("share")} isSquare color="#646cff" height="3.4em"/>
+  <Button htmlContents={wrenchIcon} onclick={()=>{modals.open(Settings, {} )}} title={localize("settings")} isSquare color="#646cff" height="3.4em"/>
   </div>
 </div>
 

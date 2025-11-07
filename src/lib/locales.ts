@@ -6,49 +6,49 @@ export const choices = ["en", "fr"];
 
 export const text : {[key: string] : {[key: string] : string}} = {
 	speakingTime : {
-		en: "Speaking time",
-		fr: "Temps de parole"
+		en: "speaking time",
+		fr: "temps de parole"
 	},
 	settings : {
-		en: "Settings",
-		fr: "Réglages"
+		en: "settings",
+		fr: "réglages"
 	},
 	share: {
-		en: "Share",
-		fr: "Partager",
+		en: "share",
+		fr: "partager",
 	},
 	help: {
-		en: "Help",
-		fr: "Aide"
+		en: "help",
+		fr: "aide"
 	},
 	language : {
-		en: "Language",
-		fr: "Langue"
+		en: "language",
+		fr: "langue"
 	},
 	close : {
-		en: "Close",
-		fr: "Fermer"
+		en: "close",
+		fr: "fermer"
 	},
 	copy : {
-		en: "Copy",
-		fr: "Copier"
+		en: "copy",
+		fr: "copier"
 	},
 	generate : {
-		en: "Generate",
-		fr: "Générer"
+		en: "generate",
+		fr: "générer"
 	},
 	reset : {
-		en: "Reset",
-		fr: "Reset"
+		en: "reset",
+		fr: "reset"
 	},
 	
 	multipleSpeakers : {
-		en: "Multiple speakers can talk at once",
-		fr: "Plusieurs personnes peuvent parler à la fois"
+		en: "multiple speakers can talk at once",
+		fr: "plusieurs personnes peuvent parler à la fois"
 	},
 	resetAllTimers : {
-		en: "Reset all timers",
-		fr: "Remettre tous les chronos à zéro"
+		en: "reset all timers",
+		fr: "remettre tous les chronos à zéro"
 	},
 	resetAllTimersAreYouSure : {
 		en: "Are you sure? All timers will be reset to zero.",
@@ -56,29 +56,45 @@ export const text : {[key: string] : {[key: string] : string}} = {
 	},
 	
 	timersURL : {
-		en: "The URL to this page, with all names and times recorded",
-		fr: "L'adresse de cette page, avec tous les noms et les temps enregistrés"
+		en: "the URL to this page, with all names and times recorded",
+		fr: "l'adresse de cette page, avec tous les noms et les temps enregistrés"
 	},
 	
 	keyboardShortcut : {
-		en: "Keyboard shortcut",
-		fr: "Raccourci clavier"
+		en: "keyboard shortcut",
+		fr: "raccourci clavier"
 	},
 	deleteTimer : {
-		en: "Delete the timer",
-		fr: "Supprimer le chrono"
+		en: "delete the timer",
+		fr: "supprimer le chrono"
 	},
 	startTimer: {
-		en: "Start the timer",
-		fr: "Démarrer le chrono"
+		en: "start the timer",
+		fr: "démarrer le chrono"
 	},
 	stopTimer: {
-		en: "Stop the timer",
-		fr: "Arrêter le chrono"
+		en: "stop the timer",
+		fr: "arrêter le chrono"
 	},
 	addTimer: {
-		en: "Add a timer",
-		fr: "Ajouter un chrono"
+		en: "add a timer",
+		fr: "ajouter un chrono"
+	},
+	men: {
+		en: "men",
+		fr: "hommes"
+	},
+	women: {
+		en: "women",
+		fr: "femmes"
+	},
+	genderMinorities: {
+		en: "gender minorities",
+		fr: "minorités de genre"
+	},
+	participant: {
+		en: "participant",
+		fr: "participant"
 	}
 }
 
@@ -104,14 +120,12 @@ export const markdownText : {[key: string] : {[key: string] : string}} = {
 	},
 }
 
-export const defaultTimers : {[key: string] : string[]}= {
-	en: ["Men", "Women", "Gender minorities"],
-	fr: ["Hommes", "Femmes", "Minorités de genre"]
-}
-
-
-export function localized(key: string) : string {
-	return text[key][appSettings.locale];
+export function localize(key: string, capitalize:boolean = true, locale: string | null = null) : string {
+	if (!locale) {
+		locale = appSettings.locale
+	}
+	const str = text[key][appSettings.locale]
+	return capitalize?str.charAt(0).toUpperCase() + str.slice(1):str;
 }
 
 export function localizedMarkdown(key: string) : string {

@@ -1,6 +1,6 @@
 <script lang="ts">
   import Button from '../elements/Button.svelte';
-import { localized, localizedMarkdown } from '../locales';
+import { localize, localizedMarkdown } from '../locales';
   
   
   const {
@@ -13,12 +13,12 @@ import { localized, localizedMarkdown } from '../locales';
 {#if isOpen}
   <div role="dialog" class="modal">
     <div class="contents">
-      <h2 style="margin-top: 0;">{localized("help")}</h2>
+      <h2 style="margin-top: 0;">{localize("help")}</h2>
       
       {@html localizedMarkdown("helpText")}
       
       <div class="actions">
-        <Button onclick={() => close()} contents={localized("close")} />
+        <Button onclick={() => close()} contents={localize("close")} />
       </div>
     </div>
   </div>

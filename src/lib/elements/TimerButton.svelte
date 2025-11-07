@@ -1,6 +1,6 @@
 <script lang="ts">
   import { timers } from "../state.svelte";
-  import { localized } from "../locales";
+  import { localize } from "../locales";
   import { pauseIcon, playIcon } from "../icons";
   
   let { timerId, onclick } = $props()
@@ -9,10 +9,10 @@
 <button
   onclick={onclick}
   class="timer-button"
-  class:redTimerButton={timers.statuses[timerId]}
-  title={localized(timers.statuses[timerId]?"stopTimer":"startTimer")}
+  class:redTimerButton={timers.data[timerId].status}
+  title={localize(timers.data[timerId].status?"stopTimer":"startTimer")}
 >
-  {#if timers.statuses[timerId]}
+  {#if timers.data[timerId].status}
     {@html pauseIcon}
   {:else}
     {@html playIcon}

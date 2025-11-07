@@ -1,13 +1,23 @@
 export let timers : {
   ids: number[],
-  names: {[key: number]: string},
-  times: {[key: number]: number},
-  statuses: {[key: number]: boolean}
+  data: {
+    [key: number]: {
+      name: string,
+      time: number,
+      status: boolean,
+      internal: {
+        time: number,
+        latestTurnOn: number,
+        defaultName: {
+          key: string,
+          originalLocale: string,
+        }
+      }
+    }
+  }
 } = $state({
   ids: [],
-  names: {},
-  times: {},
-  statuses: {},
+  data: {},
 })
 
 export let appSettings : {[key: string]: any} = $state({
