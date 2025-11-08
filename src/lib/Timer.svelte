@@ -20,14 +20,12 @@
   
   $effect(() => {
     // overwrite time to avoid drift, as the code lower down sums floats every frame
-    if (timers.data[id].status && timers.data[id].internal.latestTurnOn === 0) {
+    if (timers.data[id].status && timers.data[id].internal.latestTurnOn === null) {
       timers.data[id].internal.latestTurnOn = performance.now()
-    } else if (!timers.data[id].status && timers.data[id].internal.latestTurnOn !== 0) {
+    } else if (!timers.data[id].status && timers.data[id].internal.latestTurnOn !== null) {
       timers.data[id].internal.time += (performance.now() - timers.data[id].internal.latestTurnOn)
-      const oit = timers.data[id].time
       timers.data[id].time = timers.data[id].internal.time
-      timers.data[id].internal.latestTurnOn = 0;
-      //console.debug(`updated time from ${oit} to ${internalTime}`)
+      timers.data[id].internal.latestTurnOn = null;
     }
   })
   

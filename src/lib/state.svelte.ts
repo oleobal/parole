@@ -1,21 +1,6 @@
-export let timers : {
-  ids: number[],
-  data: {
-    [key: number]: {
-      name: string,
-      time: number,
-      status: boolean,
-      internal: {
-        time: number,
-        latestTurnOn: number,
-        defaultName: {
-          key: string,
-          originalLocale: string,
-        }
-      }
-    }
-  }
-} = $state({
+import type { TimerCollection } from "./types"
+
+export let timers : TimerCollection = $state({
   ids: [],
   data: {},
 })

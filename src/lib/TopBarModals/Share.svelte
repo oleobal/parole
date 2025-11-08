@@ -2,6 +2,7 @@
   import Button from '../elements/Button.svelte';
   import { localize } from '../locales';
   import { timers } from '../state.svelte';
+  import type { TimersExport } from '../types';
   
   let timersURL : string | null = $state(null)
   
@@ -15,8 +16,15 @@
   
   $effect(() => {
     if (isOpen && timersURL === null) {
-      const encodedTimers = btoa(JSON.stringify(timers))
-      
+      let t = $state.snapshot(timers)
+      let timeFrozen = performance.now();
+      let exportObject : TimersExport = {
+        timers: t,
+        meta: {
+          timeFrozen: timeFrozen
+        }
+      }
+      const encodedTimers = btoa(JSON.stringify(exportObject))
       timersURL = window.location.protocol + window.location.host + window.location.pathname + window.location.search + "#"+ encodedTimers
       
     }

@@ -7,6 +7,7 @@
   import { onMount } from 'svelte';
   import Button from './lib/elements/Button.svelte';
   import { filledMicrophoneIcon, plusIcon } from './lib/icons';
+  import type { TimersExport } from './lib/types';
   
   let totalTime = $derived(Object.values(timers.data).reduce((t, n) => t+n.time, 0))  
   let sortedTimerIds = $derived(timers.ids.toSorted((a, b) => {return timers.data[b].time - timers.data[a].time}))
@@ -26,10 +27,16 @@
 
   onMount(() => {
     if (window.location.hash) {
-      const newTimers = JSON.parse(atob(window.location.hash.substring(1)))
+      const newTimers = <TimersExport>JSON.parse(atob(window.location.hash.substring(1)))
       console.debug("loaded timers", newTimers)
-      timers.ids = newTimers.ids;
-      timers.data = newTimers.data;
+      const timeUnfrozen = performance.now()
+      newTimers.timers.ids.forEach(id => {
+        if (newTimers.timers.data[id].internal.latestTurnOn) {
+          newTimers.timers.data[id].internal.latestTurnOn += timeUnfrozen - newTimers.meta.timeFrozen;
+        }
+      });
+      timers.ids = newTimers.timers.ids;
+      timers.data = newTimers.timers.data;
     } else {
       // init with sensible defaults
       if (choices.indexOf(navigator.language) != -1) {
@@ -67,7 +74,7 @@
       status: false,
       internal: {
         time: 0,
-        latestTurnOn: 0,
+        latestTurnOn: null,
         defaultName: {
           key: "participant",
           originalLocale: appSettings.locale,

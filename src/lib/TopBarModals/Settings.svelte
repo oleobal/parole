@@ -18,7 +18,7 @@
       timers.data[id].status = false;
       timers.data[id].time = 0;
       timers.data[id].internal.time = 0;
-      timers.data[id].internal.latestTurnOn = 0;
+      timers.data[id].internal.latestTurnOn = null;
     });
   }
 
