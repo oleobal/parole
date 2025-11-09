@@ -13,7 +13,6 @@ import { localize, localizedMarkdown } from '../locales';
 {#if isOpen}
   <div role="dialog" class="modal">
     <div class="contents">
-      <h2 style="margin-top: 0;">{localize("help")}</h2>
       
       {@html localizedMarkdown("helpText")}
       
@@ -40,7 +39,9 @@ import { localize, localizedMarkdown } from '../locales';
   }
 
   .contents {
-    min-width: 240px;
+    min-width: min(240px, 90vw);
+    max-width: 800px;
+    max-height: 90vh;
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -48,7 +49,11 @@ import { localize, localizedMarkdown } from '../locales';
     pointer-events: auto;
     gap: 10px;
     background-color: light-dark(var(--light-bg), var(--dark-bg));
+
+    overflow-y: scroll;
   }
+
+  .contents :global(p) { text-align: justify; }
 
 
 </style>

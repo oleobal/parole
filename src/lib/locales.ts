@@ -101,22 +101,52 @@ export const text : {[key: string] : {[key: string] : string}} = {
 export const markdownText : {[key: string] : {[key: string] : string}} = {
 	helpText : {
 		en: trimMargin(`
+		## Why
+
+		Measuring speaking time allows uncovering some biases in social interactions. For instance, do men speak proportionally more than women?
+
+		To avoid introducing biases in measurement, everything should be measured, including things like off the cuff remarks or interventions by the moderator : these themselves can introduce bias, and to exclude them from measurement could mask this.
+
+		## How to use this app
+
 		This app is intended to keep track of who (or what group of people) speak for how long in a meeting.
 		
 		It is a set of **timers**, with statistics compiled at the bottom.
 		
 		Timers can be added, removed and renamed as desired.
 		
-		On a computer, timers can be toggled with the appropriate keyboard keys (and \`Esc\` disables every timer)`),
+		On a computer, timers can be toggled with the appropriate keyboard keys (and \`Esc\` disables every timer)
+		
+		The app assumes only one person is speaking at once. This can be changed in the settings.
+
+		## About this app
+
+		https://github.com/oleobal/parole
+		`),
 		
 		fr: trimMargin(`
+		## Pourquoi
+
+		Mesurer le temps de parole permet de mettre en lumière certains biais dans les interactions sociales. Par exemple, les hommes parlent-ils proportionnellement davantage que les femmes ?
+
+		Pour éviter d'introduire des biais dans la mesure, il vaut mieux tout chronométrer, y compris les remarques à la volée et l'animation : ces éléments peuvent eux-même introduire du biais, qui serait caché si on choisissait de les exclure.
+
+		## Comment utiliser cette appli
+
 		Cette appli sert à mesurer le temps de parole de gens (ou groupes de gens) dans une assemblée.
 		
 		Vous avez à votre disposition plusieurs **chronomètres**, avec les totaux affichés en bas.
 		
 		Vous pouvez ajouter, supprimer ou renommer des chronos.
 		
-		Sur un ordinateur, les chronos peuvent être activés avec les touches du clavier (et la touche \`Esc\` désactive tous les chronos).`)
+		Sur un ordinateur, les chronos peuvent être activés avec les touches du clavier (et la touche \`Esc\` désactive tous les chronos).
+		
+		L'appli part du principe qu'une seule personne parle à la fois. Cela peut être changé dans les réglages.
+
+		## À propos de cette appli
+
+		https://github.com/oleobal/parole
+		`)
 	},
 }
 
