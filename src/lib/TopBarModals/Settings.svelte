@@ -22,6 +22,7 @@
     });
   }
 
+  // FIXME this overwrites personalized names
   $effect(() => {
     timers.ids.forEach(id => {
       if (

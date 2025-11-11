@@ -17,6 +17,10 @@ export const text : {[key: string] : {[key: string] : string}} = {
 		en: "share",
 		fr: "partager",
 	},
+	download: {
+		en: "download",
+		fr: "télécharger",
+	},
 	help: {
 		en: "help",
 		fr: "aide"
@@ -40,6 +44,15 @@ export const text : {[key: string] : {[key: string] : string}} = {
 	reset : {
 		en: "reset",
 		fr: "reset"
+	},
+
+	name : {
+		en: "name",
+		fr: "nom",
+	},
+	percentage : {
+		en: "percentage",
+		fr: "pourcentage",
 	},
 	
 	multipleSpeakers : {

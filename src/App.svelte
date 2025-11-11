@@ -6,7 +6,7 @@
   import {choices, localize } from './lib/locales';
   import { onMount } from 'svelte';
   import Button from './lib/elements/Button.svelte';
-  import { filledMicrophoneIcon, plusIcon } from './lib/icons';
+  import { copyIcon, downloadIcon, filledMicrophoneIcon, paperAirplaneIcon, plusIcon } from './lib/icons';
   import type { TimersExport } from './lib/types';
   
   let totalTime = $derived(Object.values(timers.data).reduce((t, n) => t+n.time, 0))  
@@ -84,7 +84,38 @@
     timers.ids.push(id);
     return id;
   }
-  
+
+  function buildResultsAsHumanText() : string {
+    return (sortedTimerIds.map((id) => {
+        const t = timers.data[id];
+        const p = ((t.time || totalTime)?(Math.round(t.time / totalTime * 100)):"—");
+        return `${p}% ${t.name} (${humanTimeFromMilliseconds(t.time)})`;
+    })).join("\n")
+  }
+
+  function buildResultsAsTSV() : string {
+    function buildTSVline(...ar: any[]) : string {
+      return ar.join("\t");
+    }
+
+    return [buildTSVline(localize("name"), localize("percentage"), localize("speakingTime"))].concat(
+        sortedTimerIds.map((id) => {
+          const t = timers.data[id];
+          const p = ((t.time || totalTime)?(Math.round(t.time / totalTime * 100)):"NaN")
+          return buildTSVline(t.name, p, humanTimeFromMilliseconds(t.time))
+      }),
+      [buildTSVline("Total", 100, humanTimeFromMilliseconds(totalTime))]
+    ).join("\n")
+  }
+
+  function downloadResultsAsTSV() {
+      const blob = new Blob([buildResultsAsTSV()], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `parole.tsv`;
+      a.click();
+  }
 </script>
 <svelte:window on:keydown={onKeyDown} />
 
@@ -122,6 +153,10 @@
         </tr>
       </tbody>
     </table>
+    <div class="results-buttons">
+      <Button isSquare height="2em" title={localize("copy")} onclick={() => {navigator.clipboard.writeText(buildResultsAsHumanText());}} htmlContents={copyIcon}/>
+      <Button isSquare height="2em" title={localize("download")} onclick={() => {downloadResultsAsTSV();}} htmlContents={downloadIcon}/>
+    </div>
   </div>
 </main>
 
@@ -197,6 +232,12 @@
   }
   .results {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 20px;
+  }
+  .results-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
   }
 </style>
