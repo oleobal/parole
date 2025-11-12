@@ -167,7 +167,7 @@ export function localize(key: string, capitalize:boolean = true, locale: string 
 	if (!locale) {
 		locale = appSettings.locale
 	}
-	const str = text[key][appSettings.locale]
+	const str = text[key][String(locale)]
 	return capitalize?str.charAt(0).toUpperCase() + str.slice(1):str;
 }
 

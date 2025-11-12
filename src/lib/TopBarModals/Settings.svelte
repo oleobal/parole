@@ -25,7 +25,8 @@
   $effect(() => {
     timers.ids.forEach(id => {
       if (
-        timers.data[id].name !== localize(
+        timers.data[id].internal.defaultName.originalLocale != appSettings.locale
+        && timers.data[id].name === localize(
           timers.data[id].internal.defaultName.key,
           undefined,
           timers.data[id].internal.defaultName.originalLocale,
@@ -33,7 +34,7 @@
       ) {
         timers.data[id].name = localize(
           timers.data[id].internal.defaultName.key,
-          undefined,
+          true,
           appSettings.locale,
         )
         timers.data[id].internal.defaultName.originalLocale = appSettings.locale
