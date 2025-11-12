@@ -7,10 +7,12 @@
   import { onMount } from 'svelte';
   import Button from './lib/elements/Button.svelte';
   import { copyIcon, downloadIcon, filledMicrophoneIcon, plusIcon } from './lib/icons';
-  import type { TimersExport } from './lib/types';
+  import type { TimerCollection, TimersExport } from './lib/types';
   
   let totalTime = $derived(Object.values(timers.data).reduce((t, n) => t+n.time, 0))  
   let sortedTimerIds = $derived(timers.ids.toSorted((a, b) => {return timers.data[b].time - timers.data[a].time}))
+  let initialState: null | TimerCollection = null;
+  
   
   let timersElement : HTMLElement;
   function countTimerColumns() {
@@ -50,6 +52,7 @@
         });
       }
     }
+    initialState = $state.snapshot(timers)
     
     const resizeObserver = new ResizeObserver(entries => {
       // We're only watching one element
@@ -63,6 +66,25 @@
   const onKeyDown = (e:KeyboardEvent) => {
     if (e.key === "Escape") {
       Object.entries(timers.data).forEach(([k, _]) => {timers.data[Number(k)].status=false})
+    }
+  }
+  
+  window.onbeforeunload = (event) => {
+    if (initialState) {
+      const currentState = $state.snapshot(timers)
+      if ((initialState.ids.length == currentState.ids.length)
+      && initialState.ids.every((v, i) => {return currentState.ids[i] == v})
+      && initialState.ids.every((id) => {
+        return initialState?.data[id].name === currentState.data[id].name
+        && initialState?.data[id].status === currentState.data[id].status
+        && initialState?.data[id].time === currentState.data[id].time
+      })
+      ) {
+        return
+      } else {
+        event.preventDefault();
+        return true;
+      }
     }
   }
 
