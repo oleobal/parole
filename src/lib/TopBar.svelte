@@ -9,6 +9,8 @@
   import Help from './TopBarModals/Help.svelte';
   import Button from './elements/Button.svelte';
   import { infoIcon, paperAirplaneIcon, wrenchIcon } from './icons';
+  import ParoleLogo from './elements/ParoleLogo.svelte';
+  import { appSettings } from './state.svelte';
 
   
 </script>
@@ -21,12 +23,12 @@
 </Modals>
 
 <div class="background-container">
-  <div class="background"></div>
+  <div class={{"background": true, "background-animated": appSettings.enableAnimations}}></div>
 </div>
 <div class="top-bar">
   <div class="items">
   <span class="title-container">
-    <h1 class={{"title":true, "title-too-big": true}}>{localize("speakingTime")}</h1>
+    <ParoleLogo />
   </span>
   <Button htmlContents={infoIcon} onclick={()=>{modals.open(Help, {} )}} title={localize("help")} isSquare color="#646cff" height="3.4em"/>
   <Button htmlContents={paperAirplaneIcon} onclick={()=>{modals.open(Share, {} )}} title={localize("share")} isSquare color="#646cff" height="3.4em"/>
@@ -41,19 +43,6 @@
     flex: auto;
     
     container-type: inline-size;
-  }
-  
-  .title {
-    margin: 0;
-    text-align: center;
-    white-space: nowrap;
-    font-weight: 100;
-    user-select: none;
-  }
-  @container (width < 600px) { /* measured approximately, not a good solution */
-    .title {
-      font-size: min(3.2em, 12cqi);
-    }
   }
   
   /*
@@ -97,9 +86,12 @@
     background-size: 100% 100%;
     background-clip: border-box;
     
-    animation: Animation 60s ease infinite;
     height: 10em; width: 120vw;
   }
+  .background-animated {
+    animation: Animation 60s ease infinite;
+  }
+  
   @keyframes Animation { 
     0%{background-position: 0% 100%; background-size:100% 100%}
     12%{background-position: 0% 100%; background-size:100% 300%; transform: rotate(-2deg)}

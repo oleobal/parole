@@ -1,10 +1,26 @@
 import { appSettings } from "./state.svelte";
 import { marked } from "marked";
-import { trimMargin } from "./util";
+import { trimMargin, capitalize } from "./util";
 
 export const choices = ["en", "fr"];
 
 export const text : {[key: string] : {[key: string] : string}} = {
+	paroleLogo : {
+		br: "gomz",
+		ca: "parla",
+		de: "sprache",
+		en: "speech",
+		eu: "hizkera", // basque
+		eo: "parolado",
+		fi: "puhe",
+		fr: "parole",
+		id: "tutur",
+		ja: "げんぎょ",
+		la: "dicendus",
+		ru: "речь",
+		uk: "слово",
+		zh: "言語",
+	},
 	speakingTime : {
 		en: "speaking time",
 		fr: "temps de parole"
@@ -67,6 +83,10 @@ export const text : {[key: string] : {[key: string] : string}} = {
 		en: "Are you sure? All timers will be reset to zero.",
 		fr: "Etes-vous certain·e ? Tous les chronos reviendront à zéro."
 	},
+	enableAnimations: {
+		en: "Enable visual animations",
+		fr: "Activer les animations visuelles",
+	},
 	
 	timersURL : {
 		en: "the URL to this page, with all names and times recorded",
@@ -114,14 +134,18 @@ export const text : {[key: string] : {[key: string] : string}} = {
 export const markdownText : {[key: string] : {[key: string] : string}} = {
 	helpText : {
 		en: trimMargin(`
+		## What is this app?
+		
+		This is a tool to measure how long different groups of people speak in a meeting.
+		
 		## Why
-
+		
 		Measuring speaking time allows uncovering some biases in social interactions. For instance, do men speak proportionally more than women?
 
 		To avoid introducing biases in measurement, everything should be measured, including things like off the cuff remarks or interventions by the moderator : these themselves can introduce bias, and to exclude them from measurement could mask this.
-
+		
 		## How to use this app
-
+		
 		This app is intended to keep track of who (or what group of people) speak for how long in a meeting.
 		
 		It is a set of **timers**, with statistics compiled at the bottom.
@@ -131,13 +155,21 @@ export const markdownText : {[key: string] : {[key: string] : string}} = {
 		On a computer, timers can be toggled with the appropriate keyboard keys (and \`Esc\` disables every timer)
 		
 		The app assumes only one person is speaking at once. This can be changed in the settings.
-
+		
+		The "share" button allows saving the timers & times, and sending them to others.
+		
 		## About this app
-
-		https://github.com/oleobal/parole
+		
+		All rights reserved, sorry.
+		
+		Development: https://github.com/oleobal/parole
 		`),
 		
 		fr: trimMargin(`
+		## Qu'est-ce que cette appli?
+		
+		C'est un outil pour mesurer le temps de parole de différents groupes de gens dans une réunion.
+		
 		## Pourquoi
 
 		Mesurer le temps de parole permet de mettre en lumière certains biais dans les interactions sociales. Par exemple, les hommes parlent-ils proportionnellement davantage que les femmes ?
@@ -145,8 +177,6 @@ export const markdownText : {[key: string] : {[key: string] : string}} = {
 		Pour éviter d'introduire des biais dans la mesure, il vaut mieux tout chronométrer, y compris les remarques à la volée et l'animation : ces éléments peuvent eux-même introduire du biais, qui serait caché si on choisissait de les exclure.
 
 		## Comment utiliser cette appli
-
-		Cette appli sert à mesurer le temps de parole de gens (ou groupes de gens) dans une assemblée.
 		
 		Vous avez à votre disposition plusieurs **chronomètres**, avec les totaux affichés en bas.
 		
@@ -155,20 +185,24 @@ export const markdownText : {[key: string] : {[key: string] : string}} = {
 		Sur un ordinateur, les chronos peuvent être activés avec les touches du clavier (et la touche \`Esc\` désactive tous les chronos).
 		
 		L'appli part du principe qu'une seule personne parle à la fois. Cela peut être changé dans les réglages.
+		
+		Le bouton "Partager" permet de sauvegarder chronos et les temps, et de les partager à d'autres.
 
 		## À propos de cette appli
+		
+		Tous droits réservés, désolé.
 
-		https://github.com/oleobal/parole
+		Développement: https://github.com/oleobal/parole
 		`)
 	},
 }
 
-export function localize(key: string, capitalize:boolean = true, locale: string | null = null) : string {
+export function localize(key: string, doCapitalize:boolean = true, locale: string | null = null) : string {
 	if (!locale) {
 		locale = appSettings.locale
 	}
 	const str = text[key][String(locale)]
-	return capitalize?str.charAt(0).toUpperCase() + str.slice(1):str;
+	return doCapitalize?capitalize(str):str;
 }
 
 export function localizedMarkdown(key: string) : string {

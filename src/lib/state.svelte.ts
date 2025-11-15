@@ -7,5 +7,6 @@ export let timers : TimerCollection = $state({
 
 export let appSettings : {[key: string]: any} = $state({
   multipleSpeakers: false,
-  locale: "en"
+  locale: "en",
+  enableAnimations: true,
 })

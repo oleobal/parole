@@ -50,7 +50,7 @@
       <table>
         <tbody>
           <tr>
-            <td>
+            <td class="left">
               <label for="reset-all-timers">{localize("resetAllTimers")}</label>
             </td>
             <td>
@@ -58,7 +58,7 @@
             </td>
           </tr>
           <tr>
-            <td>
+            <td class="left">
               <label for="multiple-speakers">{localize("multipleSpeakers")}</label>
             </td>
             <td>
@@ -66,7 +66,15 @@
             </td>
           </tr>
           <tr>
+            <td class="left">
+              <label for="enable-animations">{localize("enableAnimations")}</label>
+            </td>
             <td>
+              <input type="checkbox" id="enable-animations" bind:checked={appSettings.enableAnimations}>
+            </td>
+          </tr>
+          <tr>
+            <td class="left">
               <label for="language-selector">{localize("language")}</label>
             </td>
             <td>
@@ -111,6 +119,10 @@
     pointer-events: auto;
     gap: 10px;
     background-color: light-dark(var(--light-bg), var(--dark-bg));
+  }
+  
+  .left {
+    text-align: left;
   }
 
 

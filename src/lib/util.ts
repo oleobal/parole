@@ -1,6 +1,6 @@
 export const keyboardAlphabet = "1234567890"; // should be detected with getLayoutMap()
 
-export const humanTimeFromMilliseconds = (s: number) => {
+export const humanTimeFromMilliseconds = (s: number) : string => {
   function pad(n: number | string) {
     return ('00' + n).slice(-2);
   }
@@ -21,7 +21,7 @@ export const humanTimeFromMilliseconds = (s: number) => {
     return secs + '.' + pad(cs);
 }
 
-export const trimMargin = (text: string) => {
+export const trimMargin = (text: string) : string => {
   /// look at the first line to determine the leading whitespace, so it should be empty of text
   
   const lead = text.match(RegExp(/^[\s]+/))?.[0]
@@ -41,4 +41,8 @@ export function styleElementAsJustCopied(it: string | HTMLElement) {
   setTimeout(() => {
     e.classList.remove("just-copied");
   }, 1000);
+}
+
+export function capitalize(str: string) : string {
+  return str.charAt(0).toUpperCase() + str.slice(1)
 }

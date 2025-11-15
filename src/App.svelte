@@ -143,8 +143,8 @@
 <svelte:window on:keydown={onKeyDown} />
 
 <div class="background-container">
-  <div class="background background-l"></div>
-  <div class="background background-r"></div>
+  <div class={{"background": true, "background-l": appSettings.enableAnimations}}></div>
+  <div class={{"background": true, "background-r": appSettings.enableAnimations}}></div>
 </div>
 <main>
   <TopBar />

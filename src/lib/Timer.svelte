@@ -68,7 +68,11 @@
 
 <svelte:window on:keydown={onKeyDown} />
 
-<div class="timer" class:timerActive={timers.data[id].status}>
+<div class={{
+  "timer": true,
+  "timer-animated": appSettings.enableAnimations,
+  "timer-active": timers.data[id].status
+}}>
 {#if !smallMode}
   <div style="display: flex; gap: 10px;">
     <div class="kbShortcut" title={localize("keyboardShortcut")}>{kbShortcut?.toUpperCase()}</div>
@@ -113,9 +117,12 @@
     background: light-dark(rgba(255,255,255,0.5), rgba(0,0,0,0.5));
     
     background-size: 200% 200%;
-    animation: Animation 20s ease infinite;
-    
   }
+  .timer-animated {
+    animation: Animation 20s ease infinite;
+  }
+  
+  
   @keyframes Animation { 
     0%{background-position:0% 0%}
     20%{background-position:0% 100%}
@@ -123,14 +130,14 @@
     70%{background-position:100% 0%}
     100%{background-position:0% 0%}
   }
-  .timer:not(.timerActive):hover {
+  .timer:not(.timer-active):hover {
     background: radial-gradient(
       light-dark(hsl(271, 100%, 86%), hsl(162, 100%, 20%)),
       light-dark(hsl(162, 100%, 86%), hsl(271, 100%, 20%))
     );
     background-size: 200% 200%;
   }
-  .timerActive {
+  .timer-active {
     text-shadow: 0 0 2px;
     border-color: #f00;
     box-shadow: 0 0 10px 0px red;
