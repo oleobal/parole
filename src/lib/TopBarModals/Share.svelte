@@ -4,8 +4,11 @@
   import { localize } from '../locales';
   import { timers } from '../state.svelte';
   import type { TimersExport } from '../types';
+  import { styleElementAsJustCopied } from '../util';
   
   let timersURL : string | null = $state(null)
+
+  let timersURLElement : HTMLElement;
     
   const {
     // provided by <Modals />
@@ -42,8 +45,8 @@
         <p>{localize("timersURL")}</p>
         
         <div style="display: flex; gap: 10px;">
-          <span class="code">{timersURL}</span>
-          <Button isSquare height="2em" title={localize("copy")} onclick={() => {if (timersURL) {navigator.clipboard.writeText(timersURL);}}} htmlContents={copyIcon}/>
+          <span class="code" bind:this={timersURLElement}>{timersURL}</span>
+          <Button isSquare height="2em" title={localize("copy")} onclick={() => {if (timersURL) {navigator.clipboard.writeText(timersURL); styleElementAsJustCopied(timersURLElement)}}} htmlContents={copyIcon}/>
         </div>
         
       </div>

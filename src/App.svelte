@@ -2,7 +2,7 @@
   import Timer from './lib/Timer.svelte'
   import TopBar from './lib/TopBar.svelte';
   import { appSettings, timers } from './lib/state.svelte';
-  import { humanTimeFromMilliseconds } from './lib/util';
+  import { styleElementAsJustCopied, humanTimeFromMilliseconds } from './lib/util';
   import {choices, localize } from './lib/locales';
   import { onMount } from 'svelte';
   import Button from './lib/elements/Button.svelte';
@@ -13,6 +13,7 @@
   let sortedTimerIds = $derived(timers.ids.toSorted((a, b) => {return timers.data[b].time - timers.data[a].time}))
   let initialState: null | TimerCollection = null;
   
+  let resultsTableElement: HTMLElement;
   
   let timersElement : HTMLElement;
   function countTimerColumns() {
@@ -159,7 +160,7 @@
   </div>
   
   <div class="results">
-    <table style="font-size: 1.2rem;">
+    <table style="font-size: 1.2rem;" bind:this={resultsTableElement}>
       <tbody>
         {#each sortedTimerIds as timer}
           <tr style={timers.data[timer].status?"text-shadow: 0 0 2px;":""}>
@@ -176,7 +177,7 @@
       </tbody>
     </table>
     <div class="results-buttons">
-      <Button isSquare height="2em" title={localize("copy")} onclick={() => {navigator.clipboard.writeText(buildResultsAsHumanText());}} htmlContents={copyIcon}/>
+      <Button isSquare height="2em" title={localize("copy")} onclick={() => {navigator.clipboard.writeText(buildResultsAsHumanText()); styleElementAsJustCopied(resultsTableElement)}} htmlContents={copyIcon}/>
       <Button isSquare height="2em" title={localize("download")} onclick={() => {downloadResultsAsTSV();}} htmlContents={downloadIcon}/>
     </div>
   </div>

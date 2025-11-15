@@ -27,3 +27,18 @@ export const trimMargin = (text: string) => {
   const lead = text.match(RegExp(/^[\s]+/))?.[0]
   return lead ? text.replaceAll(lead, "\n") : text
 }
+
+export function styleElementAsJustCopied(it: string | HTMLElement) {
+  let e : HTMLElement | null;
+  if (typeof it === "string") {
+    e = document.getElementById(it)
+  } else {
+    e = it;
+  }
+  if (!e) { return }
+  e.classList.remove("just-copied");
+  e.classList.add("just-copied");
+  setTimeout(() => {
+    e.classList.remove("just-copied");
+  }, 1000);
+}

@@ -64,3 +64,16 @@ a:hover {
 .numeric-duration {
   font-variant-numeric: tabular-nums;
 }
+
+@keyframes just-copied {
+    from {
+      background: light-dark(hsla(54, 100%, 79%, 0.8), hsla(54, 100%, 35%, 0.8));
+    }
+    to {
+      background: transparent;
+    }
+  }
+
+  .just-copied {
+    animation: just-copied 1s ease-out 0s;
+  }
