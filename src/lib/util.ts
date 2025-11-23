@@ -46,3 +46,14 @@ export function styleElementAsJustCopied(it: string | HTMLElement) {
 export function capitalize(str: string) : string {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
+
+/** returns a new array */
+export function shuffle<T>(array: T[]) : T[] {
+  let newArr = array.slice();
+  
+  for (let i = newArr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+  }
+  return newArr;
+}

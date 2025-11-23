@@ -142,54 +142,72 @@
 </script>
 <svelte:window on:keydown={onKeyDown} />
 
-<div class="background-container">
+<div class={{
+  "background-container": true,
+  "background-spotted": appSettings.enableAnimations,
+}}>
   <div class={{"background": true, "background-l": appSettings.enableAnimations}}></div>
   <div class={{"background": true, "background-r": appSettings.enableAnimations}}></div>
 </div>
 <main>
   <TopBar />
-  <div class="timers" bind:this={timersElement}>
-    {#each timers.ids as timer}
-      <div class="timer">
-        <Timer id={timer} smallMode={nbOfTimerColumns===1}/>
+  <content>
+    <div class="timers" bind:this={timersElement}>
+      {#each timers.ids as timer}
+        <div class="timer">
+          <Timer id={timer} smallMode={nbOfTimerColumns===1}/>
+        </div>
+      {/each}
+      <div class={"add-timer "+(nbOfTimerColumns===1?"add-timer-small-layout":"add-timer-big-layout")} title={localize("addTimer")}>
+        <Button onclick={addTimer} color="#080" htmlContents={plusIcon} isSquare height="3em" />
       </div>
-    {/each}
-    <div class={"add-timer "+(nbOfTimerColumns===1?"add-timer-small-layout":"add-timer-big-layout")} title={localize("addTimer")}>
-      <Button onclick={addTimer} color="#080" htmlContents={plusIcon} isSquare height="3em" />
     </div>
-  </div>
-  
-  <div class="results">
-    <table style="font-size: 1.2rem;" bind:this={resultsTableElement}>
-      <tbody>
-        {#each sortedTimerIds as timer}
-          <tr style={timers.data[timer].status?"text-shadow: 0 0 2px;":""}>
-            <td><div style="height .8em; width: .8em; color: red;">{#if timers.data[timer].status}{@html filledMicrophoneIcon}{/if}</div></td>
-            <td style="text-align: left;">{timers.data[timer].name}</td>
-            <td style="text-align: right; font-variant-numeric: tabular-nums; min-width: 50px;">{(timers.data[timer].time || totalTime)?(Math.round(timers.data[timer].time / totalTime * 100)):"—"}%</td>
-            <td style="text-align: right; min-width: 120px;" class="numeric-duration">{humanTimeFromMilliseconds(timers.data[timer].time)}</td>
+    
+    <div class="results">
+      <table style="font-size: 1.2rem;" bind:this={resultsTableElement}>
+        <tbody>
+          {#each sortedTimerIds as timer}
+            <tr style={timers.data[timer].status?"text-shadow: 0 0 2px;":""}>
+              <td><div style="height .8em; width: .8em; color: red;">{#if timers.data[timer].status}{@html filledMicrophoneIcon}{/if}</div></td>
+              <td style="text-align: left;">{timers.data[timer].name}</td>
+              <td style="text-align: right; font-variant-numeric: tabular-nums; min-width: 50px;">{(timers.data[timer].time || totalTime)?(Math.round(timers.data[timer].time / totalTime * 100)):"—"}%</td>
+              <td style="text-align: right; min-width: 120px;" class="numeric-duration">{humanTimeFromMilliseconds(timers.data[timer].time)}</td>
+            </tr>
+          {/each}
+          <tr>
+            <td></td>
+            <td style="text-align: left; font-weight: bold;">Total</td><td></td><td class="numeric-duration" style="text-align: right;font-weight: bold;">{humanTimeFromMilliseconds(totalTime)}</td>
           </tr>
-        {/each}
-        <tr>
-          <td></td>
-          <td style="text-align: left; font-weight: bold;">Total</td><td></td><td class="numeric-duration" style="text-align: right;font-weight: bold;">{humanTimeFromMilliseconds(totalTime)}</td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="results-buttons">
-      <Button isSquare height="2em" title={localize("copy")} onclick={() => {navigator.clipboard.writeText(buildResultsAsHumanText()); styleElementAsJustCopied(resultsTableElement)}} htmlContents={copyIcon}/>
-      <Button isSquare height="2em" title={localize("download")} onclick={() => {downloadResultsAsTSV();}} htmlContents={downloadIcon}/>
+        </tbody>
+      </table>
+      <div class="results-buttons">
+        <Button isSquare height="2em" title={localize("copy")} onclick={() => {navigator.clipboard.writeText(buildResultsAsHumanText()); styleElementAsJustCopied(resultsTableElement)}} htmlContents={copyIcon}/>
+        <Button isSquare height="2em" title={localize("download")} onclick={() => {downloadResultsAsTSV();}} htmlContents={downloadIcon}/>
+      </div>
     </div>
-  </div>
+  </content>
 </main>
 
 <style>
+  content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  
   .background-container {
     position: absolute;
     height: max(100%, 100vh); width: max(100%, 100vw);
     overflow: hidden;
     z-index: -1000;
   }
+  .background-spotted {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill:none;stroke:rgba(127,127,127, 0.1);stroke-miterlimit:10;stroke-width:1px;%7D%3C/style%3E%3C/defs%3E%3Cpolygon class='cls-1' points='12,10 14,12 12,14 10,12'/%3E%3C/svg%3E");
+    background-size: 20px 20px;
+    background-repeat: repeat;
+  }
+  
+  
   .background {
     position: absolute;
     height: 100%; width: 100vw;
@@ -215,8 +233,8 @@
     );
     /* background: red; */
     animation:
-    Breathe 40s ease infinite,
-    Up-Down 60s ease-in-out infinite;
+    Breathe 80s ease infinite,
+    Up-Down 120s ease-in-out infinite;
   }
   .background-r {
     right: -50vw;
@@ -225,8 +243,8 @@
       transparent 50%
     );
     animation: 
-    Breathe 60s ease-in-out infinite,
-    Up-Down 40s ease infinite;
+    Breathe 120s ease-in-out infinite,
+    Up-Down 80s ease infinite;
     animation-range-start: 30%;
   }
   

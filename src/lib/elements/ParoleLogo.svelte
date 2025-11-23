@@ -1,15 +1,20 @@
 <script lang="ts">
   import { text } from "../locales";
   import { appSettings } from "../state.svelte";
-  import { capitalize } from "../util";
+  import { capitalize, shuffle } from "../util";
   
   const fr = capitalize(text.paroleLogo.fr);
-  const alternatives = Object.values(text.paroleLogo).filter((it) => it != fr).map((it) => capitalize(it))
+  const alternatives = shuffle(
+    Object.values(text.paroleLogo)
+    .filter((it) => it != text.paroleLogo.fr)
+    .map((it) => capitalize(it))
+  );
   
   let title : string = $state(fr)
+  const maxShare = 8;
   let status = $state({
     altId: 0,
-    share: 10,
+    share: maxShare,
     goingRight: true,
     pause: false,
   })
@@ -27,15 +32,15 @@
     }
     
     title = (
-      fr.slice(0, Math.round(status.share/10*fr.length))
-      + alternatives[status.altId].slice(Math.round((status.share/10)*alternatives[status.altId].length))
+      fr.slice(0, Math.round(status.share/maxShare*fr.length))
+      + alternatives[status.altId].slice(Math.round((status.share/maxShare)*alternatives[status.altId].length))
     )
     
     
     if (status.share == 0) {
       status.goingRight = true;
       status.pause = true;
-    } else if (status.share == 10) {
+    } else if (status.share == maxShare) {
       status.goingRight = false;
       status.altId = (status.altId + 1) % alternatives.length;
       status.pause = true;
@@ -59,10 +64,9 @@
 </script>
 <h1 class={{
   "title": true,
-  "title-too-big": true,
   "isAlternate": title !== fr,
   "shine": !status.pause,
-}} >{title}</h1>
+}} >{title}</h1><h1 class="title title-too-big">P</h1>
 
 <style>
   .shine {
@@ -79,11 +83,19 @@
     white-space: nowrap;
     font-weight: 100;
     user-select: none;
-    transition: all 0.5s ease-out
+    transition: all 0.5s ease-out;
+    overflow: hidden;
   }
-  @container (width < 600px) { /* measured approximately, not a good solution */
+  .title-too-big {
+    display: none;
+  }
+  
+  @container (width < 130px) {
     .title {
-      font-size: min(3.2em, 12cqi);
+      display: none;
+    }
+    .title-too-big {
+      display: inline;
     }
   }
 </style>

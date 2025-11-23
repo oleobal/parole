@@ -89,7 +89,7 @@
     height: 10em; width: 120vw;
   }
   .background-animated {
-    animation: Animation 60s ease infinite;
+    animation: Animation 100s ease infinite;
   }
   
   @keyframes Animation { 
