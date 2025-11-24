@@ -78,8 +78,8 @@
     
     
     background: linear-gradient(
-      light-dark(hsl(271, 100%, 86%), hsl(162, 100%, 20%)),
-      light-dark(hsl(162, 100%, 86%), hsl(271, 100%, 20%)) 85%,
+      light-dark(var(--light-bubble-1), var(--dark-bubble-1)),
+      light-dark(var(--light-bubble-2), var(--dark-bubble-2)) 85%,
       transparent
     );
     

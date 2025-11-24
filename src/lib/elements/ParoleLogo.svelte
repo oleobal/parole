@@ -10,71 +10,48 @@
     .map((it) => capitalize(it))
   );
   
-  let title : string = $state(fr)
-  const maxShare = 8;
-  let status = $state({
-    altId: 0,
-    share: maxShare,
-    goingRight: true,
-    pause: false,
-  })
+  let altTitleElement: HTMLElement;
+  let alternateTitle : string = $state("")
+  let altId = 0
   
-  function moveTitle() {
+  function blinkAlternate() {
     if (!appSettings.enableAnimations) {
-      title = fr;
-      status.share = 10;
-      status.goingRight = true;
-      window.setTimeout(moveTitle, 60000); // they might restart them, an effect might be cleaner but this will do
+      window.setTimeout(blinkAlternate, 100_000)
       return;
     }
-    if (status.pause) {
-      status.pause = false;
-    }
     
-    title = (
-      fr.slice(0, Math.round(status.share/maxShare*fr.length))
-      + alternatives[status.altId].slice(Math.round((status.share/maxShare)*alternatives[status.altId].length))
-    )
-    
-    
-    if (status.share == 0) {
-      status.goingRight = true;
-      status.pause = true;
-    } else if (status.share == maxShare) {
-      status.goingRight = false;
-      status.altId = (status.altId + 1) % alternatives.length;
-      status.pause = true;
-    }
-    if (status.goingRight) {
-      status.share+=1
-    } else {
-      status.share-=1
-    }
-    if (status.pause) {
-      if (title === fr) {
-        window.setTimeout(moveTitle, 60000)
-      } else {
-        window.setTimeout(moveTitle, 3000)
+    const animationDuration = 15_000;
+    altId = (altId + 1) % alternatives.length;
+    alternateTitle = alternatives[altId];
+    altTitleElement.animate(
+      [
+        {offset: 0, opacity: 0, filter: "blur(10px)", easing: "ease-in-out"},
+        {offset: 0.3, opacity: 0.5, filter: "blur(1px)", easing: "ease-in-out"},
+        {offset: 1, opacity: 0, filter: "blur(5px)", easing: "ease-in-out"}
+      ], {
+        duration: animationDuration,
+        iterations: 1,
       }
-    } else {
-      window.setTimeout(moveTitle, 50)
-    }
+    );
+    window.setTimeout(blinkAlternate, animationDuration+100_000)
   }
-  window.setTimeout(moveTitle, 0)
+  window.setTimeout(blinkAlternate, 100_000)
 </script>
-<h1 class={{
-  "title": true,
-  "isAlternate": title !== fr,
-  "shine": !status.pause,
-}} >{title}</h1><h1 class="title title-too-big">P</h1>
+<div class="container">
+  <h1 class="title">{fr}</h1>
+  <h1 class="title title-too-big">P</h1>
+  <h1 class="title title-alternate" bind:this={altTitleElement}>{alternateTitle}</h1>
+</div>
 
 <style>
-  .shine {
-    filter: blur(1px);
+  .container{
+    display: flex;
+    flex-direction: row;
   }
   
-  .isAlternate {
-    opacity: 0.7;
+  .title-alternate {
+    opacity: 0;
+    filter: blur(5px);
   }
   
   .title {
@@ -96,6 +73,11 @@
     }
     .title-too-big {
       display: inline;
+    }
+  }
+  @container (width < 400px) {
+    .title-alternate {
+      display: none;
     }
   }
 </style>

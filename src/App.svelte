@@ -142,10 +142,7 @@
 </script>
 <svelte:window on:keydown={onKeyDown} />
 
-<div class={{
-  "background-container": true,
-  "background-spotted": appSettings.enableAnimations,
-}}>
+<div class="background-container">
   <div class={{"background": true, "background-l": appSettings.enableAnimations}}></div>
   <div class={{"background": true, "background-r": appSettings.enableAnimations}}></div>
 </div>
@@ -201,11 +198,6 @@
     overflow: hidden;
     z-index: -1000;
   }
-  .background-spotted {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill:none;stroke:rgba(127,127,127, 0.1);stroke-miterlimit:10;stroke-width:1px;%7D%3C/style%3E%3C/defs%3E%3Cpolygon class='cls-1' points='12,10 14,12 12,14 10,12'/%3E%3C/svg%3E");
-    background-size: 20px 20px;
-    background-repeat: repeat;
-  }
   
   
   .background {
@@ -228,7 +220,7 @@
   .background-l {
     left: -50vw;
     background: radial-gradient(
-      light-dark(hsl(271, 100%, 86%), hsl(162, 100%, 20%)),
+      light-dark(var(--light-bubble-1), var(--dark-bubble-1)),
       transparent 50%
     );
     /* background: red; */
@@ -239,7 +231,7 @@
   .background-r {
     right: -50vw;
     background: radial-gradient(
-      light-dark(hsl(162, 100%, 86%), hsl(271, 100%, 20%)),
+      light-dark(var(--light-bubble-2), var(--dark-bubble-2)),
       transparent 50%
     );
     animation: 
