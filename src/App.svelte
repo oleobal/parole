@@ -2,7 +2,7 @@
   import Timer from './lib/Timer.svelte'
   import TopBar from './lib/TopBar.svelte';
   import { appSettings, timers } from './lib/state.svelte';
-  import { styleElementAsJustCopied, humanTimeFromMilliseconds } from './lib/util';
+  import { styleElementAsJustCopied, humanTimeFromMilliseconds, HumanTimeDecimals, veryHumanTimeFromMilliseconds } from './lib/util';
   import {choices, localize } from './lib/locales';
   import { onMount } from 'svelte';
   import Button from './lib/elements/Button.svelte';
@@ -112,7 +112,7 @@
     return (sortedTimerIds.map((id) => {
         const t = timers.data[id];
         const p = ((t.time || totalTime)?(Math.round(t.time / totalTime * 100)):"—");
-        return `${p}% ${t.name} (${humanTimeFromMilliseconds(t.time)})`;
+        return `${p}% ${t.name} (${veryHumanTimeFromMilliseconds(t.time)})`;
     })).join("\n")
   }
   
@@ -125,9 +125,9 @@
         sortedTimerIds.map((id) => {
           const t = timers.data[id];
           const p = ((t.time || totalTime)?(Math.round(t.time / totalTime * 100)):"NaN")
-          return buildTSVline(t.name, p, humanTimeFromMilliseconds(t.time))
+          return buildTSVline(t.name, p, humanTimeFromMilliseconds(t.time, HumanTimeDecimals.INCLUDE))
       }),
-      [buildTSVline("Total", 100, humanTimeFromMilliseconds(totalTime))]
+      [buildTSVline("Total", 100, humanTimeFromMilliseconds(totalTime, HumanTimeDecimals.INCLUDE))]
     ).join("\n")
   }
   

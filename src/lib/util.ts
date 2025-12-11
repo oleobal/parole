@@ -1,10 +1,12 @@
 export const keyboardAlphabet = "1234567890"; // should be detected with getLayoutMap()
 
-export const humanTimeFromMilliseconds = (s: number) : string => {
-  function pad(n: number | string) {
-    return ('00' + n).slice(-2);
-  }
+export enum HumanTimeDecimals {
+  INCLUDE,
+  EXCLUDE,
+  AUTO,
+}
 
+function timeFromMilliseconds(s: number) {
   let ms = s % 1000;
   let cs = Math.floor(ms / 10)
   s = (s - ms) / 1000;
@@ -12,13 +14,68 @@ export const humanTimeFromMilliseconds = (s: number) : string => {
   s = (s - secs) / 60;
   let mins = s % 60;
   let hrs = (s - mins) / 60;
+  
+  return {
+    cs: cs,
+    secs: secs,
+    mins: mins,
+    hrs: hrs,
+  }
+}
 
-  if (hrs)
-    return hrs + ':' + pad(mins) + ':' + pad(secs) + '.' + pad(cs);
-  else if (mins)
-    return mins + ':' + pad(secs) + '.' + pad(cs);
-  else 
-    return secs + '.' + pad(cs);
+function padTimeElement(n: number | string) {
+  return ('00' + n).slice(-2);
+}
+
+export function veryHumanTimeFromMilliseconds(s: number) {
+  let { cs, secs, mins, hrs } = timeFromMilliseconds(s)
+  
+  if (hrs) {
+    return (
+      hrs + "hr"
+      + ' ' + mins + "mn"
+    );
+  }
+  else if (mins) {
+    return (
+      mins + "mn"
+      + ' ' + secs + "s"
+    );
+  }
+  else {
+    return (
+      secs + '.' + padTimeElement(cs) + "s"
+    );
+  }
+}
+
+export function humanTimeFromMilliseconds(
+  s: number,
+  decimals: HumanTimeDecimals = HumanTimeDecimals.AUTO,
+) : string {
+  let { cs, secs, mins, hrs } = timeFromMilliseconds(s)
+
+  if (hrs) {
+    return (
+      hrs
+      + ':' + padTimeElement(mins)
+      + ':' + padTimeElement(secs)
+      + (decimals == HumanTimeDecimals.INCLUDE ? '.' + padTimeElement(cs) : '')
+    );
+  }
+  else if (mins) {
+    return (
+      mins
+      + ':' + padTimeElement(secs)
+      + (decimals != HumanTimeDecimals.EXCLUDE ? '.' + padTimeElement(cs) : '')
+    );
+  }
+  else {
+    return (
+      secs
+      + (decimals != HumanTimeDecimals.EXCLUDE ? '.' + padTimeElement(cs) : '')
+    );
+  }
 }
 
 export const trimMargin = (text: string) : string => {

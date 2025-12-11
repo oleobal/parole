@@ -22,3 +22,7 @@ To run it:
 `yarn install`
 
 `yarn dev`
+
+## manipulating internal state
+
+Export the internal state with the top right "Share" button, which gives one an URL with a base64 string encoding a JSON of the internal state. It can be modified, reencoded, and then loaded into the app.

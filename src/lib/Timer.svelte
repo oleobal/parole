@@ -82,8 +82,8 @@
     <Button onclick={deleteTimer} color="light-dark(hsl(0, 100%, 70%), hsl(0, 100%, 27%))" htmlContents={trashIcon} title={localize("deleteTimer")} isSquare height="3em"/>
   </div>
   <TimerButton timerId={id} onclick={press} />
-  <div>
-    <span class="numeric-duration" style="font-size: 50px;">{humanTimeFromMilliseconds(timers.data[id].time)}</span>
+  <div class="duration-container">
+    <span class="numeric-duration">{humanTimeFromMilliseconds(timers.data[id].time)}</span>
   </div>
 {:else}
   <div style="display: flex; gap: 10px;justify-content: space-around;align-items: center;">
@@ -96,8 +96,8 @@
       <div contenteditable="true" bind:innerText={timers.data[id].name} class="name">
         {timers.data[id].name}
       </div>
-      <div style="flex: 1">
-        <span class="numeric-duration" style="font-size: 50px;">{humanTimeFromMilliseconds(timers.data[id].time)}</span>
+      <div class="duration-container" style="flex: 1">
+        <span class="numeric-duration">{humanTimeFromMilliseconds(timers.data[id].time)}</span>
       </div>
     </div>
   
@@ -172,5 +172,10 @@
     justify-content: center;
     align-items: center;
     user-select: none;
+  }
+  
+  .numeric-duration {
+    font-size: 50px;
+    overflow: auto;
   }
 </style>
