@@ -48,8 +48,4 @@
     padding: calc(var(--height) * 0.18);
   }
   
-  .htmlContents:hover {
-    border-width: 3px;
-  }
-  
 </style>
